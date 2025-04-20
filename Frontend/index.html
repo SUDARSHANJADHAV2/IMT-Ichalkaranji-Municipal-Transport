@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBBPS - Ichalkaranji Bus Booking and Pass System</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-brand">
+                    <img src="assets/images/logo.png" alt="IBBPS Logo" class="logo">
+                    <h1>IBBPS</h1>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="search.html">Search Buses</a></li>
+                    <li><a href="pass-application.html">Monthly Pass</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="login.html" class="btn btn-primary">Login</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Ichalkaranji Bus Booking and Pass System</h1>
+                    <p>Streamlining public transport access in Ichalkaranji through a modern online platform.</p>
+                    <div class="search-box">
+                        <form action="search.html" method="get" class="search-form">
+                            <div class="form-group">
+                                <label for="source">From</label>
+                                <input type="text" id="source" name="source" placeholder="Enter source location" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="destination">To</label>
+                                <input type="text" id="destination" name="destination" placeholder="Enter destination" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="date">Date</label>
+                                <input type="date" id="date" name="date" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Search Buses</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">Key Features</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bus"></i>
+                        </div>
+                        <h3>Bus Search</h3>
+                        <p>Search for buses by source and destination to find the best route for your journey.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-ticket-alt"></i>
+                        </div>
+                        <h3>Online Booking</h3>
+                        <p>Book tickets online and get QR-based tickets directly on your device.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <h3>Monthly Passes</h3>
+                        <p>Apply for monthly bus passes with Aadhaar verification for regular commuters.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3>Route Information</h3>
+                        <p>View detailed route information and bus schedules for all available routes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="popular-routes">
+            <div class="container">
+                <h2 class="section-title">Popular Routes</h2>
+                <div class="routes-grid">
+                    <div class="route-card">
+                        <h3>Siddheshwar Temple to Bus Stand</h3>
+                        <p><i class="fas fa-bus"></i> 5 buses</p>
+                        <p><i class="fas fa-rupee-sign"></i> Starting from ₹10</p>
+                        <a href="search.html?source=Siddheshwar%20Temple&destination=Bus%20Stand" class="btn btn-secondary">View Buses</a>
+                    </div>
+                    <div class="route-card">
+                        <h3>Railway Station to College Road</h3>
+                        <p><i class="fas fa-bus"></i> 3 buses</p>
+                        <p><i class="fas fa-rupee-sign"></i> Starting from ₹15</p>
+                        <a href="search.html?source=Railway%20Station&destination=College%20Road" class="btn btn-secondary">View Buses</a>
+                    </div>
+                    <div class="route-card">
+                        <h3>Market Area to Industrial Zone</h3>
+                        <p><i class="fas fa-bus"></i> 4 buses</p>
+                        <p><i class="fas fa-rupee-sign"></i> Starting from ₹12</p>
+                        <a href="search.html?source=Market%20Area&destination=Industrial%20Zone" class="btn btn-secondary">View Buses</a>
+                    </div>
+                    <div class="route-card">
+                        <h3>City Center to Hospital Area</h3>
+                        <p><i class="fas fa-bus"></i> 6 buses</p>
+                        <p><i class="fas fa-rupee-sign"></i> Starting from ₹8</p>
+                        <a href="search.html?source=City%20Center&destination=Hospital%20Area" class="btn btn-secondary">View Buses</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="app-download">
+            <div class="container">
+                <div class="app-content">
+                    <div class="app-text">
+                        <h2>Download Our Mobile App</h2>
+                        <p>Get the IBBPS mobile app for easy bus booking and pass management on the go.</p>
+                        <div class="app-buttons">
+                            <a href="#" class="btn btn-app"><i class="fab fa-google-play"></i> Google Play</a>
+                            <a href="#" class="btn btn-app"><i class="fab fa-apple"></i> App Store</a>
+                        </div>
+                    </div>
+                    <div class="app-image">
+                        <img src="assets/images/mobile-app.png" alt="IBBPS Mobile App">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/images/logo.png" alt="IBBPS Logo">
+                    <h2>IBBPS</h2>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="search.html">Search Buses</a></li>
+                        <li><a href="pass-application.html">Monthly Pass</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="register.html">Register</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> IBBPS Office, Main Road, Ichalkaranji, Maharashtra</p>
+                    <p><i class="fas fa-phone"></i> +91 123-456-7890</p>
+                    <p><i class="fas fa-envelope"></i> info@ibbps.com</p>
+                </div>
+                <div class="footer-social">
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Ichalkaranji Bus Booking and Pass System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

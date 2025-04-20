@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Details - IBBPS</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-brand">
+                    <img src="assets/images/logo.png" alt="IBBPS Logo" class="logo">
+                    <h1>IBBPS</h1>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="search.html" class="active">Search Buses</a></li>
+                    <li><a href="pass-application.html">Monthly Pass</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="login.html" class="btn btn-primary">Login</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="bus-details-section">
+            <div class="container">
+                <div class="back-to-search">
+                    <a href="search.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Search Results</a>
+                </div>
+                
+                <div class="bus-details-container">
+                    <div class="bus-info-header">
+                        <div class="bus-info-left">
+                            <h2>Express Route 101</h2>
+                            <div class="bus-info-meta">
+                                <span class="bus-type express">Express</span>
+                                <span class="bus-rating"><i class="fas fa-star"></i> 4.5</span>
+                                <span class="bus-reviews">(120 reviews)</span>
+                            </div>
+                        </div>
+                        <div class="bus-info-right">
+                            <div class="bus-fare-display">
+                                <span class="fare-amount">₹15</span>
+                                <span class="fare-person">per person</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bus-journey-details">
+                        <div class="journey-timing">
+                            <div class="departure-info">
+                                <div class="time-label">Departure</div>
+                                <div class="time-value">07:30 AM</div>
+                                <div class="location">Siddheshwar Temple</div>
+                                <div class="date">16 Apr, 2025</div>
+                            </div>
+                            
+                            <div class="journey-line">
+                                <div class="journey-line-track">
+                                    <div class="journey-stops">
+                                        <div class="journey-stop" style="left: 0%">
+                                            <div class="stop-dot"></div>
+                                            <div class="stop-info">
+                                                <div class="stop-time">07:30 AM</div>
+                                                <div class="stop-name">Siddheshwar Temple</div>
+                                            </div>
+                                        </div>
+                                        <div class="journey-stop" style="left: 40%">
+                                            <div class="stop-dot"></div>
+                                            <div class="stop-info">
+                                                <div class="stop-time">07:42 AM</div>
+                                                <div class="stop-name">Market Area</div>
+                                            </div>
+                                        </div>
+                                        <div class="journey-stop" style="left: 75%">
+                                            <div class="stop-dot"></div>
+                                            <div class="stop-info">
+                                                <div class="stop-time">07:50 AM</div>
+                                                <div class="stop-name">Hospital</div>
+                                            </div>
+                                        </div>
+                                        <div class="journey-stop" style="left: 100%">
+                                            <div class="stop-dot"></div>
+                                            <div class="stop-info">
+                                                <div class="stop-time">08:00 AM</div>
+                                                <div class="stop-name">Bus Stand</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="journey-duration">
+                                    <i class="fas fa-clock"></i> Duration: 30 min
+                                </div>
+                            </div>
+                            
+                            <div class="arrival-info">
+                                <div class="time-label">Arrival</div>
+                                <div class="time-value">08:00 AM</div>
+                                <div class="location">Bus Stand</div>
+                                <div class="date">16 Apr, 2025</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bus-details-tabs">
+                        <div class="tab-buttons">
+                            <button class="tab-btn active" data-tab="bus-info">Bus Info</button>
+                            <button class="tab-btn" data-tab="seat-selection">Seat Selection</button>
+                            <button class="tab-btn" data-tab="reviews">Reviews</button>
+                        </div>
+                        
+                        <div class="tab-content">
+                            <!-- Bus Info Tab -->
+                            <div class="tab-pane active" id="bus-info">
+                                <div class="bus-features">
+                                    <h3>Bus Features</h3>
+                                    <div class="features-grid">
+                                        <div class="feature-item">
+                                            <i class="fas fa-wifi"></i>
+                                            <span>Wi-Fi</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-charging-station"></i>
+                                            <span>Charging Point</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-snowflake"></i>
+                                            <span>Air Conditioned</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-music"></i>
+                                            <span>Entertainment</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-first-aid"></i>
+                                            <span>First Aid Kit</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-water"></i>
+                                            <span>Water Bottle</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bus-description">
+                                    <h3>Description</h3>
+                                    <p>Express Route 101 is a premium express bus service connecting Siddheshwar Temple to Bus Stand with limited stops for a faster journey. The bus is well-maintained with comfortable seating and modern amenities to ensure a pleasant travel experience.</p>
+                                </div>
+                                
+                                <div class="bus-policies">
+                                    <h3>Policies</h3>
+                                    <div class="policy-item">
+                                        <h4><i class="fas fa-exchange-alt"></i> Cancellation Policy</h4>
+                                        <ul>
+                                            <li>100% refund if cancelled 24 hours before departure</li>
+                                            <li>50% refund if cancelled 12 hours before departure</li>
+                                            <li>No refund for cancellations less than 12 hours before departure</li>
+                                        </ul>
+                                    </div>
+                                    <div class="policy-item">
+                                        <h4><i class="fas fa-suitcase"></i> Baggage Policy</h4>
+                                        <ul>
+                                            <li>One bag (up to 15kg) allowed per passenger</li>
+                                            <li>Additional baggage may incur extra charges</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Seat Selection Tab -->
+                            <div class="tab-pane" id="seat-selection">
+                                <div class="seat-selection-container">
+                                    <div class="seat-map">
+                                        <h3>Select Your Seat</h3>
+                                        <div class="seat-map-legend">
+                                            <div class="legend-item">
+                                                <div class="seat available"></div>
+                                                <span>Available</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="seat selected"></div>
+                                                <span>Selected</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="seat booked"></div>
+                                                <span>Booked</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bus-layout">
+                                            <div class="driver-seat">
+                                                <i class="fas fa-steering-wheel"></i>
+                                            </div>
+                                            <div class="seats-container">
+                                                <div class="seat-row">
+                                                    <div class="seat available" data-seat="A1">A1</div>
+                                                    <div class="seat available" data-seat="A2">A2</div>
+                                                    <div class="seat-spacer"></div>
+                                                    <div class="seat booked" data-seat="A3">A3</div>
+                                                    <div class="seat available" data-seat="A4">A4</div>
+                                                </div>
+                                                <div class="seat-row">
+                                                    <div class="seat available" data-seat="B1">B1</div>
+                                                    <div class="seat booked" data-seat="B2">B2</div>
+                                                    <div class="seat-spacer"></div>
+                                                    <div class="seat available" data-seat="B3">B3</div>
+                                                    <div class="seat available" data-seat="B4">B4</div>
+                                                </div>
+                                                <div class="seat-row">
+                                                    <div class="seat booked" data-seat="C1">C1</div>
+                                                    <div class="seat booked" data-seat="C2">C2</div>
+                                                    <div class="seat-spacer"></div>
+                                                    <div class="seat available" data-seat="C3">C3</div>
+                                                    <div class="seat available" data-seat="C4">C4</div>
+                                                </div>
+                                                <div class="seat-row">
+                                                    <div class="seat available" data-seat="D1">D1</div>
+                                                    <div class="seat available" data-seat="D2">D2</div>
+                                                    <div class="seat-spacer"></div>
+                                                    <div class="seat booked" data-seat="D3">D3</div>
+                                                    <div class="seat booked" data-seat="D4">D4</div>
+                                                </div>
+                                                <div class="seat-row">
+                                                    <div class="seat available" data-seat="E1">E1</div>
+                                                    <div class="seat available" data-seat="E2">E2</div>
+                                                    <div class="seat-spacer"></div>
+                                                    <div class="seat available" data-seat="E3">E3</div>
+                                                    <div class="seat available" data-seat="E4">E4</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="booking-summary">
+                                        <h3>Booking Summary</h3>
+                                        <div class="summary-item">
+                                            <span>Bus</span>
+                                            <span>Express Route 101</span>
+                                        </div>
+                                        <div class="summary-item">
+                                            <span>Journey Date</span>
+                                            <span>16 Apr, 2025</span>
+                                        </div>
+                                        <div class="summary-item">
+                                            <span>Departure</span>
+                                            <span>07:30 AM, Siddheshwar Temple</span>
+                                        </div>
+                                        <div class="summary-item">
+                                            <span>Arrival</span>
+                                            <span>08:00 AM, Bus Stand</span>
+                                        </div>
+                                        <div class="summary-item">
+                                            <span>Selected Seat(s)</span>
+                                            <span id="selected-seats">None</span>
+                                        </div>
+                                        <div class="summary-item total">
+                                            <span>Total Fare</span>
+                                            <span id="total-fare">₹0</span>
+                                        </div>
+                                        <button id="proceed-to-pay" class="btn btn-primary btn-block" disabled>Proceed to Pay</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Reviews Tab -->
+                            <div class="tab-pane" id="reviews">
+                                <div class="reviews-container">
+                                    <div class="reviews-summary">
+                                        <div class="average-rating">
+                                            <div class="rating-number">4.5</div>
+                                            <div class="rating-stars">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star-half-alt"></i>
+                                            </div>
+                                            <div class="total-reviews">Based on 120 reviews</div>
+                                        </div>
+                                        <div class="rating-breakdown">
+                                            <div class="rating-bar">
+                                                <span class="rating-level">5 stars</span>
+                                                <div class="progress-bar">
+                                                    <div class="progress" style="width: 75%"></div>
+                                                </div>
+                                                <span class="rating-count">90</span>
+                                            </div>
+                                            <div class="rating-bar">
+                                                <span class="rating-level">4 stars</span>
+                                                <div class="progress-bar">
+                                                    <div class="progress" style="width: 15%"></div>
+                                                </div>
+                                                <span class="rating-count">18</span>
+                                            </div>
+                                            <div class="rating-bar">
+                                                <span class="rating-level">3 stars</span>
+                                                <div class="progress-bar">
+                                                    <div class="progress" style="width: 6%"></div>
+                                                </div>
+                                                <span class="rating-count">7</span>
+                                            </div>
+                                            <div class="rating-bar">
+                                                <span class="rating-level">2 stars</span>
+                                                <div class="progress-bar">
+                                                    <div class="progress" style="width: 3%"></div>
+                                                </div>
+                                                <span class="rating-count">3</span>
+                                            </div>
+                                            <div class="rating-bar">
+                                                <span class="rating-level">1 star</span>
+                                                <div class="progress-bar">
+                                                    <div class="progress" style="width: 1%"></div>
+                                                </div>
+                                                <span class="rating-count">2</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="reviews-list">
+                                        <div class="review-item">
+                                            <div class="reviewer-info">
+                                                <div class="reviewer-image">
+                                                    <img src="assets/images/user-avatar.png" alt="User">
+                                                </div>
+                                                <div class="reviewer-details">
+                                                    <div class="reviewer-name">Rahul Patil</div>
+                                                    <div class="review-date">10 Mar, 2025</div>
+                                                </div>
+                                            </div>
+                                            <div class="review-rating">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                            <div class="review-content">
+                                                <p>Great service! The bus was clean and comfortable. The driver was professional and reached on time. Will definitely recommend to others.</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="review-item">
+                                            <div class="reviewer-info">
+                                                <div class="reviewer-image">
+                                                    <img src="assets/images/user-avatar.png" alt="User">
+                                                </div>
+                                                <div class="reviewer-details">
+                                                    <div class="reviewer-name">Anita Sharma</div>
+                                                    <div class="review-date">5 Mar, 2025</div>
+                                                </div>
+                                            </div>
+                                            <div class="review-rating">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            </div>
+                                            <div class="review-content">
+                                                <p>Good service overall. The bus was punctual and the seating was comfortable. The only issue was the air conditioning was a bit weak.</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="review-item">
+                                            <div class="reviewer-info">
+                                                <div class="reviewer-image">
+                                                    <img src="assets/images/user-avatar.png" alt="User">
+                                                </div>
+                                                <div class="reviewer-details">
+                                                    <div class="reviewer-name">Suresh Kulkarni</div>
+                                                    <div class="review-date">28 Feb, 2025</div>
+                                                </div>
+                                            </div>
+                                            <div class="review-rating">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star-half-alt"></i>
+                                            </div>
+                                            <div class="review-content">
+                                                <p>Very satisfied with the journey. The bus was neat and well-maintained. The driver was courteous and the journey was smooth. Would use again.</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="view-more-reviews">
+                                            <button class="btn btn-outline">View More Reviews</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="write-review">
+                                        <h3>Write a Review</h3>
+                                        <form class="review-form">
+                                            <div class="form-group">
+                                                <label>Your Rating</label>
+                                                <div class="rating-input">
+                                                    <i class="far fa-star" data-rating="1"></i>
+                                                    <i class="far fa-star" data-rating="2"></i>
+                                                    <i class="far fa-star" data-rating="3"></i>
+                                                    <i class="far fa-star" data-rating="4"></i>
+                                                    <i class="far fa-star" data-rating="5"></i>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="review-text">Your Review</label>
+                                                <textarea id="review-text" placeholder="Share your experience..."></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Submit Review</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/images/logo.png" alt="IBBPS Logo">
+                    <h2>IBBPS</h2>
+                    <p>Ichalkaranji Bus Booking and Pass System</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h3>Quick Links</h3>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="search.html">Search Buses</a></li>
+                            <li><a href="pass-application.html">Bus Pass</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Help & Support</h3>
+                        <ul>
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Terms of Service</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Contact Info</h3>
+                        <ul class="contact-info">
+                            <li><i class="fas fa-map-marker-alt"></i> Bus Depot, Main Road, Ichalkaranji</li>
+                            <li><i class="fas fa-phone"></i> +91 9876543210</li>
+                            <li><i class="fas fa-envelope"></i> info@ibbps.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Ichalkaranji Bus Booking and Pass System. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/booking.js"></script>
+</body>
+</html>

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - IBBPS</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="assets/images/logo.png" alt="IBBPS Logo">
+                        <span>IBBPS</span>
+                    </a>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="search.html">Search Buses</a></li>
+                    <li><a href="pass-application.html">Bus Pass</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="dashboard.html" class="user-profile active">
+                        <img src="assets/images/user-avatar.png" alt="User Profile">
+                        <span id="username">My Account</span>
+                    </a>
+                    <button id="logout-btn" class="btn btn-outline">Logout</button>
+                </div>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <section class="dashboard-page">
+            <div class="container">
+                <div class="dashboard-header">
+                    <div class="user-welcome">
+                        <h1>Welcome, <span id="user-fullname">Rahul Patil</span></h1>
+                        <p>Manage your bookings and bus passes</p>
+                    </div>
+                    <div class="quick-actions">
+                        <a href="search.html" class="btn btn-primary"><i class="fas fa-search"></i> Search Buses</a>
+                        <a href="pass-application.html" class="btn btn-outline"><i class="fas fa-id-card"></i> Apply for Pass</a>
+                    </div>
+                </div>
+
+                <div class="dashboard-content">
+                    <div class="dashboard-sidebar">
+                        <div class="profile-card">
+                            <div class="profile-picture">
+                                <img src="assets/images/user-avatar.png" alt="User Profile">
+                                <button class="edit-profile-pic"><i class="fas fa-camera"></i></button>
+                            </div>
+                            <div class="profile-info">
+                                <h3 id="sidebar-username">Rahul Patil</h3>
+                                <p id="user-email">rahul.p@gmail.com</p>
+                                <p id="user-mobile">+91 9876543210</p>
+                            </div>
+                            <a href="#" class="btn btn-text btn-block">Edit Profile</a>
+                        </div>
+                        <div class="dashboard-nav">
+                            <ul>
+                                <li class="active"><a href="#active-passes"><i class="fas fa-id-card"></i> Active Passes</a></li>
+                                <li><a href="#upcoming-bookings"><i class="fas fa-ticket-alt"></i> Upcoming Bookings</a></li>
+                                <li><a href="#booking-history"><i class="fas fa-history"></i> Booking History</a></li>
+                                <li><a href="#saved-routes"><i class="fas fa-star"></i> Saved Routes</a></li>
+                                <li><a href="#account-settings"><i class="fas fa-cog"></i> Account Settings</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-main">
+                        <div class="tab-panel active" id="active-passes-panel">
+                            <div class="panel-header">
+                                <h2>Active Bus Passes</h2>
+                            </div>
+                            <div class="active-pass-card">
+                                <div class="pass-header">
+                                    <div class="pass-type student">
+                                        <span class="badge">Student</span>
+                                    </div>
+                                    <div class="pass-validity">
+                                        <span>Valid till</span>
+                                        <strong>15 May 2025</strong>
+                                    </div>
+                                </div>
+                                <div class="pass-body">
+                                    <div class="pass-user-info">
+                                        <h3>Rahul Patil</h3>
+                                        <p class="pass-id">Pass ID: IBBPS-ST-23456</p>
+                                    </div>
+                                    <div class="pass-details">
+                                        <div class="detail-item">
+                                            <i class="fas fa-calendar-check"></i>
+                                            <span>Issued On: <strong>15 Apr 2025</strong></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <i class="fas fa-route"></i>
+                                            <span>Coverage: <strong>All City Routes</strong></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <i class="fas fa-university"></i>
+                                            <span>Institution: <strong>Ichalkaranji Polytechnic</strong></span>
+                                        </div>
+                                    </div>
+                                    <div class="pass-qr">
+                                        <img src="assets/images/qr-code-sample.png" alt="Pass QR Code">
+                                        <p>Scan to verify</p>
+                                    </div>
+                                </div>
+                                <div class="pass-actions">
+                                    <button class="btn btn-outline"><i class="fas fa-download"></i> Download Pass</button>
+                                    <button class="btn btn-text"><i class="fas fa-sync-alt"></i> Renew Pass</button>
+                                </div>
+                            </div>
+                            <div class="no-passes" style="display: none;">
+                                <div class="empty-state">
+                                    <img src="assets/images/no-passes.svg" alt="No active passes">
+                                    <h3>No Active Passes</h3>
+                                    <p>You don't have any active bus passes at the moment.</p>
+                                    <a href="pass-application.html" class="btn btn-primary">Apply for a Pass</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-panel" id="upcoming-bookings-panel">
+                            <div class="panel-header">
+                                <h2>Upcoming Bookings</h2>
+                            </div>
+                            <div class="booking-list">
+                                <div class="booking-card">
+                                    <div class="booking-status">
+                                        <span class="badge confirmed">Confirmed</span>
+                                    </div>
+                                    <div class="booking-details">
+                                        <div class="booking-route">
+                                            <div class="bus-number">#143</div>
+                                            <div class="route-info">
+                                                <div class="station-time">
+                                                    <strong>Shivaji Chowk</strong>
+                                                    <span>10:30 AM, 21 Apr 2025</span>
+                                                </div>
+                                                <div class="route-arrow">
+                                                    <i class="fas fa-long-arrow-alt-right"></i>
+                                                </div>
+                                                <div class="station-time">
+                                                    <strong>Railway Station</strong>
+                                                    <span>11:15 AM, 21 Apr 2025</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="booking-meta">
+                                            <div class="meta-item">
+                                                <i class="fas fa-ticket-alt"></i>
+                                                <span>Booking ID: <strong>ICH2504210015</strong></span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <i class="fas fa-chair"></i>
+                                                <span>Seats: <strong>2 (A4, A5)</strong></span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <i class="fas fa-money-bill-wave"></i>
+                                                <span>Total Fare: <strong>₹52</strong></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="booking-actions">
+                                        <button class="btn btn-outline"><i class="fas fa-download"></i> Download Ticket</button>
+                                        <button class="btn btn-text text-danger"><i class="fas fa-times-circle"></i> Cancel Booking</button>
+                                    </div>
+                                </div>
+                                <div class="booking-card">
+                                    <div class="booking-status">
+                                        <span class="badge confirmed">Confirmed</span>
+                                    </div>
+                                    <div class="booking-details">
+                                        <div class="booking-route">
+                                            <div class="bus-number">#207</div>
+                                            <div class="route-info">
+                                                <div class="station-time">
+                                                    <strong>Market Yard</strong>
+                                                    <span>08:00 AM, 25 Apr 2025</span>
+                                                </div>
+                                                <div class="route-arrow">
+                                                    <i class="fas fa-long-arrow-alt-right"></i>
+                                                </div>
+                                                <div class="station-time">
+                                                    <strong>College Road</strong>
+                                                    <span>08:25 AM, 25 Apr 2025</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="booking-meta">
+                                            <div class="meta-item">
+                                                <i class="fas fa-ticket-alt"></i>
+                                                <span>Booking ID: <strong>ICH2504250023</strong></span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <i class="fas fa-chair"></i>
+                                                <span>Seats: <strong>1 (B9)</strong></span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <i class="fas fa-money-bill-wave"></i>
+                                                <span>Total Fare: <strong>₹27</strong></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="booking-actions">
+                                        <button class="btn btn-outline"><i class="fas fa-download"></i> Download Ticket</button>
+                                        <button class="btn btn-text text-danger"><i class="fas fa-times-circle"></i> Cancel Booking</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="no-bookings" style="display: none;">
+                                <div class="empty-state">
+                                    <img src="assets/images/no-bookings.svg" alt="No upcoming bookings">
+                                    <h3>No Upcoming Bookings</h3>
+                                    <p>You don't have any upcoming bus bookings.</p>
+                                    <a href="search.html" class="btn btn-primary">Search Buses</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-panel" id="booking-history-panel">
+                            <div class="panel-header">
+                                <h2>Booking History</h2>
+                                <div class="panel-actions">
+                                    <div class="search-filter">
+                                        <input type="text" placeholder="Search by booking ID or route">
+                                        <button><i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="booking-history-table">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Booking ID</th>
+                                            <th>Date & Time</th>
+                                            <th>Route</th>
+                                            <th>Seats</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>ICH2504100008</td>
+                                            <td>10 Apr 2025, 09:15 AM</td>
+                                            <td>Shivaji Chowk → Bus Stand</td>
+                                            <td>1 (C6)</td>
+                                            <td>₹25</td>
+                                            <td><span class="badge completed">Completed</span></td>
+                                            <td>
+                                                <button class="btn btn-icon"><i class="fas fa-receipt" title="View Receipt"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>ICH2504050012</td>
+                                            <td>05 Apr 2025, 11:00 AM</td>
+                                            <td>Railway Station → Market Yard</td>
+                                            <td>2 (A1, A2)</td>
+                                            <td>₹50</td>
+                                            <td><span class="badge completed">Completed</span></td>
+                                            <td>
+                                                <button class="btn btn-icon"><i class="fas fa-receipt" title="View Receipt"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>ICH2503250019</td>
+                                            <td>25 Mar 2025, 06:30 PM</td>
+                                            <td>College Road → Shivaji Chowk</td>
+                                            <td>1 (B12)</td>
+                                            <td>₹25</td>
+                                            <td><span class="badge completed">Completed</span></td>
+                                            <td>
+                                                <button class="btn btn-icon"><i class="fas fa-receipt" title="View Receipt"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>ICH2503200007</td>
+                                            <td>20 Mar 2025, 08:45 AM</td>
+                                            <td>Market Yard → Railway Station</td>
+                                            <td>1 (D8)</td>
+                                            <td>₹30</td>
+                                            <td><span class="badge cancelled">Cancelled</span></td>
+                                            <td>
+                                                <button class="btn btn-icon"><i class="fas fa-receipt" title="View Receipt"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="pagination">
+                                <button class="pagination-btn prev disabled"><i class="fas fa-chevron-left"></i></button>
+                                <div class="pagination-numbers">
+                                    <button class="active">1</button>
+                                    <button>2</button>
+                                    <button>3</button>
+                                </div>
+                                <button class="pagination-btn next"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="tab-panel" id="saved-routes-panel">
+                            <div class="panel-header">
+                                <h2>Saved Routes</h2>
+                            </div>
+                            <div class="saved-routes-container">
+                                <div class="saved-route-card">
+                                    <div class="route-path">
+                                        <div class="route-stop">
+                                            <i class="fas fa-map-marker-alt start"></i>
+                                            <span>Shivaji Chowk</span>
+                                        </div>
+                                        <div class="route-line"></div>
+                                        <div class="route-stop">
+                                            <i class="fas fa-map-marker-alt end"></i>
+                                            <span>College Road</span>
+                                        </div>
+                                    </div>
+                                    <div class="route-info">
+                                        <div class="route-buses">
+                                            <span>Available Buses:</span>
+                                            <div class="bus-badges">
+                                                <span class="bus-badge">#143</span>
+                                                <span class="bus-badge">#207</span>
+                                            </div>
+                                        </div>
+                                        <div class="route-meta">
+                                            <div class="meta-item">
+                                                <i class="fas fa-clock"></i>
+                                                <span>Avg. Time: 20 mins</span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <i class="fas fa-money-bill"></i>
+                                                <span>Fare: ₹25</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="route-actions">
+                                        <a href="search.html?from=Shivaji Chowk&to=College Road" class="btn btn-primary">Book Now</a>
+                                        <button class="btn btn-icon"><i class="fas fa-trash-alt"></i></button>
+                                    </div>
+                                </div>
+                                <div class="saved-route-card">
+                                    <div class="route-path">
+                                        <div class="route-stop">
+                                            <i class="fas fa-map-marker-alt start"></i>
+                                            <span>Railway Station</span>
+                                        </div>
+                                        <div class="route-line"></div>
+                                        <div class="route-stop">
+                                            <i class="fas fa-map-marker-alt end"></i>
+                                            <span>Market Yard</span>
+                                        </div>
+                                    </div>
+                                    <div class="route-info">
+                                        <div class="route-buses">
+                                            <span>Available Buses:</span>
+                                            <div class="bus-badges">
+                                                <span class="bus-badge">#159</span>
+                                                <span class="bus-badge">#302</span>
+                                            </div>
+                                        </div>
+                                        <div class="route-meta">
+                                            <div class="meta-item">
+                                                <i class="fas fa-clock"></i>
+                                                <span>Avg. Time: 15 mins</span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <i class="fas fa-money-bill"></i>
+                                                <span>Fare: ₹30</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="route-actions">
+                                        <a href="search.html?from=Railway Station&to=Market Yard" class="btn btn-primary">Book Now</a>
+                                        <button class="btn btn-icon"><i class="fas fa-trash-alt"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="no-saved-routes" style="display: none;">
+                                <div class="empty-state">
+                                    <img src="assets/images/no-routes.svg" alt="No saved routes">
+                                    <h3>No Saved Routes</h3>
+                                    <p>You haven't saved any frequent routes yet.</p>
+                                    <a href="search.html" class="btn btn-primary">Search Buses</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-panel" id="account-settings-panel">
+                            <div class="panel-header">
+                                <h2>Account Settings</h2>
+                            </div>
+                            <div class="settings-form-container">
+                                <form id="profile-settings-form">
+                                    <div class="form-section">
+                                        <h3>Personal Information</h3>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="settings-fullname">Full Name</label>
+                                                <input type="text" id="settings-fullname" value="Rahul Patil">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="settings-mobile">Mobile Number</label>
+                                                <input type="tel" id="settings-mobile" value="9876543210">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="settings-email">Email Address</label>
+                                            <input type="email" id="settings-email" value="rahul.p@gmail.com">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="settings-address">Address</label>
+                                            <textarea id="settings-address" rows="3">123, Shivaji Nagar, Ichalkaranji, Maharashtra - 416115</textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-section">
+                                        <h3>Change Password</h3>
+                                        <div class="form-group">
+                                            <label for="current-password">Current Password</label>
+                                            <input type="password" id="current-password">
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="new-password">New Password</label>
+                                                <input type="password" id="new-password">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="confirm-password">Confirm New Password</label>
+                                                <input type="password" id="confirm-password">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-section">
+                                        <h3>Notification Settings</h3>
+                                        <div class="form-group checkbox">
+                                            <input type="checkbox" id="email-notifications" checked>
+                                            <label for="email-notifications">Email notifications for bookings and updates</label>
+                                        </div>
+                                        <div class="form-group checkbox">
+                                            <input type="checkbox" id="sms-notifications" checked>
+                                            <label for="sms-notifications">SMS notifications for bookings and updates</label>
+                                        </div>
+                                        <div class="form-group checkbox">
+                                            <input type="checkbox" id="promotional-notifications">
+                                            <label for="promotional-notifications">Promotional offers and newsletters</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                        <button type="reset" class="btn btn-outline">Reset</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/images/logo.png" alt="IBBPS Logo">
+                    <h3>Ichalkaranji Bus Booking and Pass System</h3>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="search.html">Search Buses</a></li>
+                            <li><a href="pass-application.html">Bus Pass</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Support</h4>
+                        <ul>
+                            <li><a href="#">FAQs</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Contact</h4>
+                        <address>
+                            <p><i class="fas fa-map-marker-alt"></i> Transport Bhavan, Ichalkaranji</p>
+                            <p><i class="fas fa-phone"></i> +91 2324 123456</p>
+                            <p><i class="fas fa-envelope"></i> info@ibbps.gov.in</p>
+                        </address>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Ichalkaranji Bus Booking and Pass System. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/dashboard.js"></script>
+</body>
+</html>

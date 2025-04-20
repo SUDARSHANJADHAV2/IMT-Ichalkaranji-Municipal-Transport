@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Ticket - IBBPS</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="assets/images/logo.png" alt="IBBPS Logo">
+                        <span>IBBPS</span>
+                    </a>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="search.html">Search Buses</a></li>
+                    <li><a href="pass-application.html">Bus Pass</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="dashboard.html" class="user-profile">
+                        <img src="assets/images/user-avatar.png" alt="User Profile">
+                        <span id="username">My Account</span>
+                    </a>
+                    <button id="logout-btn" class="btn btn-outline">Logout</button>
+                </div>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <section class="booking-page">
+            <div class="container">
+                <div class="booking-header">
+                    <h1>Book Your Ticket</h1>
+                    <p><a href="search.html">← Back to Search Results</a></p>
+                </div>
+
+                <div class="booking-container">
+                    <div class="booking-summary">
+                        <div class="bus-info-card">
+                            <div class="route-info">
+                                <h3 id="bus-number">Bus #143</h3>
+                                <div class="route-details">
+                                    <div class="source">
+                                        <span class="time" id="departure-time">07:30 AM</span>
+                                        <span class="station" id="source-station">Shivaji Chowk</span>
+                                    </div>
+                                    <div class="journey-line">
+                                        <span class="duration" id="duration">45 min</span>
+                                        <div class="line"></div>
+                                    </div>
+                                    <div class="destination">
+                                        <span class="time" id="arrival-time">08:15 AM</span>
+                                        <span class="station" id="destination-station">Railway Station</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bus-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-calendar"></i>
+                                    <span id="journey-date">Thursday, Apr 20, 2025</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-chair"></i>
+                                    <span id="available-seats">24 seats available</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-money-bill"></i>
+                                    <span id="fare">₹25 per seat</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="booking-form-container">
+                        <h3>Passenger Details</h3>
+                        <form id="booking-form" class="booking-form">
+                            <div class="form-group">
+                                <label for="passenger-name">Full Name</label>
+                                <input type="text" id="passenger-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="passenger-mobile">Mobile Number</label>
+                                <input type="tel" id="passenger-mobile" pattern="[0-9]{10}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="passenger-email">Email</label>
+                                <input type="email" id="passenger-email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Number of Seats</label>
+                                <div class="seat-counter">
+                                    <button type="button" id="decrease-seats" class="seat-btn">-</button>
+                                    <input type="number" id="seat-count" min="1" max="6" value="1" readonly>
+                                    <button type="button" id="increase-seats" class="seat-btn">+</button>
+                                </div>
+                            </div>
+
+                            <div class="seat-selection">
+                                <h4>Select Your Seats</h4>
+                                <div class="bus-layout">
+                                    <div class="driver-area">
+                                        <i class="fas fa-steering-wheel"></i>
+                                    </div>
+                                    <div class="seats-container">
+                                        <!-- Seats will be generated via JavaScript -->
+                                    </div>
+                                </div>
+                                <div class="seat-legend">
+                                    <div class="legend-item">
+                                        <div class="seat-sample available"></div>
+                                        <span>Available</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="seat-sample selected"></div>
+                                        <span>Selected</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="seat-sample booked"></div>
+                                        <span>Booked</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="fare-summary">
+                                <div class="fare-item">
+                                    <span>Base Fare (<span id="summary-seats">1</span> seat)</span>
+                                    <span id="base-fare">₹25</span>
+                                </div>
+                                <div class="fare-item">
+                                    <span>Service Fee</span>
+                                    <span id="service-fee">₹2</span>
+                                </div>
+                                <div class="fare-item total">
+                                    <span>Total Amount</span>
+                                    <span id="total-fare">₹27</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group terms">
+                                <input type="checkbox" id="terms-checkbox" required>
+                                <label for="terms-checkbox">I agree to the <a href="#">Terms & Conditions</a></label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block">Proceed to Payment</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/images/logo.png" alt="IBBPS Logo">
+                    <h3>Ichalkaranji Bus Booking and Pass System</h3>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="search.html">Search Buses</a></li>
+                            <li><a href="pass-application.html">Bus Pass</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Support</h4>
+                        <ul>
+                            <li><a href="#">FAQs</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Contact</h4>
+                        <address>
+                            <p><i class="fas fa-map-marker-alt"></i> Transport Bhavan, Ichalkaranji</p>
+                            <p><i class="fas fa-phone"></i> +91 2324 123456</p>
+                            <p><i class="fas fa-envelope"></i> info@ibbps.gov.in</p>
+                        </address>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Ichalkaranji Bus Booking and Pass System. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/booking.js"></script>
+</body>
+</html>

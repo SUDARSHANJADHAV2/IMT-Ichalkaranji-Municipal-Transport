@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Buses - IBBPS</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-brand">
+                    <img src="assets/images/logo.png" alt="IBBPS Logo" class="logo">
+                    <h1>IBBPS</h1>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="search.html" class="active">Search Buses</a></li>
+                    <li><a href="pass-application.html">Monthly Pass</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="login.html" class="btn btn-primary">Login</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="search-section">
+            <div class="container">
+                <div class="search-container">
+                    <h2>Search Buses</h2>
+                    <form id="search-form" class="search-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="search-source">From</label>
+                                <input type="text" id="search-source" name="source" placeholder="Enter source location" required>
+                            </div>
+                            <div class="form-group switch-locations">
+                                <button type="button" id="switch-btn">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </button>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-destination">To</label>
+                                <input type="text" id="search-destination" name="destination" placeholder="Enter destination" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="search-date">Date</label>
+                                <input type="date" id="search-date" name="date" required>
+                            </div>
+                            <div class="form-group search-btn-container">
+                                <button type="submit" class="btn btn-primary">Search Buses</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="search-results" class="search-results">
+                    <div class="search-filters">
+                        <h3>Filters</h3>
+                        <div class="filter-group">
+                            <h4>Departure Time</h4>
+                            <div class="filter-options">
+                                <label class="filter-option">
+                                    <input type="checkbox" name="departure" value="morning">
+                                    <span>Morning (6 AM - 12 PM)</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" name="departure" value="afternoon">
+                                    <span>Afternoon (12 PM - 4 PM)</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" name="departure" value="evening">
+                                    <span>Evening (4 PM - 8 PM)</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" name="departure" value="night">
+                                    <span>Night (8 PM - 6 AM)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="filter-group">
+                            <h4>Bus Type</h4>
+                            <div class="filter-options">
+                                <label class="filter-option">
+                                    <input type="checkbox" name="busType" value="ordinary">
+                                    <span>Ordinary</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" name="busType" value="express">
+                                    <span>Express</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" name="busType" value="ac">
+                                    <span>AC</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="filter-group">
+                            <h4>Price Range</h4>
+                            <div class="price-slider">
+                                <input type="range" id="price-range" min="0" max="100" value="100">
+                                <div class="price-values">
+                                    <span id="min-price">₹0</span>
+                                    <span id="max-price">₹100</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="apply-filters" class="btn btn-secondary">Apply Filters</button>
+                        <button id="reset-filters" class="btn btn-outline">Reset</button>
+                    </div>
+
+                    <div class="search-results-container">
+                        <div class="search-summary">
+                            <h3>Buses from <span id="result-source">Siddheshwar Temple</span> to <span id="result-destination">Bus Stand</span></h3>
+                            <p><span id="result-date">16 Apr, 2025</span> • <span id="result-count">5</span> buses found</p>
+                        </div>
+                        
+                        <div class="sort-options">
+                            <span>Sort by:</span>
+                            <button class="sort-btn active" data-sort="departure">Departure</button>
+                            <button class="sort-btn" data-sort="duration">Duration</button>
+                            <button class="sort-btn" data-sort="price">Price</button>
+                        </div>
+                        
+                        <div class="bus-list">
+                            <!-- Bus item 1 -->
+                            <div class="bus-item">
+                                <div class="bus-header">
+                                    <div class="bus-name">
+                                        <h4>Express Route 101</h4>
+                                        <span class="bus-type express">Express</span>
+                                    </div>
+                                    <div class="bus-rating">
+                                        <span class="rating"><i class="fas fa-star"></i> 4.5</span>
+                                        <span class="reviews">(120 reviews)</span>
+                                    </div>
+                                </div>
+                                <div class="bus-details">
+                                    <div class="bus-time">
+                                        <div class="departure">
+                                            <span class="time">07:30 AM</span>
+                                            <span class="location">Siddheshwar Temple</span>
+                                        </div>
+                                        <div class="duration">
+                                            <span class="duration-time">30 min</span>
+                                            <div class="duration-line">
+                                                <div class="stop-points">
+                                                    <span class="stop-point" title="Market Area"></span>
+                                                    <span class="stop-point" title="Hospital"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="arrival">
+                                            <span class="time">08:00 AM</span>
+                                            <span class="location">Bus Stand</span>
+                                        </div>
+                                    </div>
+                                    <div class="bus-fare">
+                                        <span class="fare">₹15</span>
+                                        <span class="per-person">per person</span>
+                                    </div>
+                                    <div class="bus-seats">
+                                        <span class="available-seats"><i class="fas fa-chair"></i> 12 seats available</span>
+                                    </div>
+                                    <div class="bus-action">
+                                        <a href="bus-details.html?id=101" class="btn btn-primary">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Bus item 2 -->
+                            <div class="bus-item">
+                                <div class="bus-header">
+                                    <div class="bus-name">
+                                        <h4>City Connect 205</h4>
+                                        <span class="bus-type ordinary">Ordinary</span>
+                                    </div>
+                                    <div class="bus-rating">
+                                        <span class="rating"><i class="fas fa-star"></i> 4.2</span>
+                                        <span class="reviews">(85 reviews)</span>
+                                    </div>
+                                </div>
+                                <div class="bus-details">
+                                    <div class="bus-time">
+                                        <div class="departure">
+                                            <span class="time">08:15 AM</span>
+                                            <span class="location">Siddheshwar Temple</span>
+                                        </div>
+                                        <div class="duration">
+                                            <span class="duration-time">45 min</span>
+                                            <div class="duration-line">
+                                                <div class="stop-points">
+                                                    <span class="stop-point" title="Market Area"></span>
+                                                    <span class="stop-point" title="College Road"></span>
+                                                    <span class="stop-point" title="Hospital"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="arrival">
+                                            <span class="time">09:00 AM</span>
+                                            <span class="location">Bus Stand</span>
+                                        </div>
+                                    </div>
+                                    <div class="bus-fare">
+                                        <span class="fare">₹10</span>
+                                        <span class="per-person">per person</span>
+                                    </div>
+                                    <div class="bus-seats">
+                                        <span class="available-seats"><i class="fas fa-chair"></i> 8 seats available</span>
+                                    </div>
+                                    <div class="bus-action">
+                                        <a href="bus-details.html?id=205" class="btn btn-primary">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Bus item 3 -->
+                            <div class="bus-item">
+                                <div class="bus-header">
+                                    <div class="bus-name">
+                                        <h4>Comfort AC 302</h4>
+                                        <span class="bus-type ac">AC</span>
+                                    </div>
+                                    <div class="bus-rating">
+                                        <span class="rating"><i class="fas fa-star"></i> 4.8</span>
+                                        <span class="reviews">(95 reviews)</span>
+                                    </div>
+                                </div>
+                                <div class="bus-details">
+                                    <div class="bus-time">
+                                        <div class="departure">
+                                            <span class="time">09:30 AM</span>
+                                            <span class="location">Siddheshwar Temple</span>
+                                        </div>
+                                        <div class="duration">
+                                            <span class="duration-time">25 min</span>
+                                            <div class="duration-line">
+                                                <div class="stop-points">
+                                                    <span class="stop-point" title="Market Area"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="arrival">
+                                            <span class="time">09:55 AM</span>
+                                            <span class="location">Bus Stand</span>
+                                        </div>
+                                    </div>
+                                    <div class="bus-fare">
+                                        <span class="fare">₹25</span>
+                                        <span class="per-person">per person</span>
+                                    </div>
+                                    <div class="bus-seats">
+                                        <span class="available-seats"><i class="fas fa-chair"></i> 15 seats available</span>
+                                    </div>
+                                    <div class="bus-action">
+                                        <a href="bus-details.html?id=302" class="btn btn-primary">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Bus item 4 -->
+                            <div class="bus-item">
+                                <div class="bus-header">
+                                    <div class="bus-name">
+                                        <h4>Express Route 105</h4>
+                                        <span class="bus-type express">Express</span>
+                                    </div>
+                                    <div class="bus-rating">
+                                        <span class="rating"><i class="fas fa-star"></i> 4.3</span>
+                                        <span class="reviews">(78 reviews)</span>
+                                    </div>
+                                </div>
+                                <div class="bus-details">
+                                    <div class="bus-time">
+                                        <div class="departure">
+                                            <span class="time">11:15 AM</span>
+                                            <span class="location">Siddheshwar Temple</span>
+                                        </div>
+                                        <div class="duration">
+                                            <span class="duration-time">35 min</span>
+                                            <div class="duration-line">
+                                                <div class="stop-points">
+                                                    <span class="stop-point" title="Market Area"></span>
+                                                    <span class="stop-point" title="Hospital"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="arrival">
+                                            <span class="time">11:50 AM</span>
+                                            <span class="location">Bus Stand</span>
+                                        </div>
+                                    </div>
+                                    <div class="bus-fare">
+                                        <span class="fare">₹15</span>
+                                        <span class="per-person">per person</span>
+                                    </div>
+                                    <div class="bus-seats">
+                                        <span class="available-seats"><i class="fas fa-chair"></i> 20 seats available</span>
+                                    </div>
+                                    <div class="bus-action">
+                                        <a href="bus-details.html?id=105" class="btn btn-primary">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Bus item 5 -->
+                            <div class="bus-item">
+                                <div class="bus-header">
+                                    <div class="bus-name">
+                                        <h4>City Connect 210</h4>
+                                        <span class="bus-type ordinary">Ordinary</span>
+                                    </div>
+                                    <div class="bus-rating">
+                                        <span class="rating"><i class="fas fa-star"></i> 4.0</span>
+                                        <span class="reviews">(62 reviews)</span>
+                                    </div>
+                                </div>
+                                <div class="bus-details">
+                                    <div class="bus-time">
+                                        <div class="departure">
+                                            <span class="time">01:30 PM</span>
+                                            <span class="location">Siddheshwar Temple</span>
+                                        </div>
+                                        <div class="duration">
+                                            <span class="duration-time">40 min</span>
+                                            <div class="duration-line">
+                                                <div class="stop-points">
+                                                    <span class="stop-point" title="Market Area"></span>
+                                                    <span class="stop-point" title="College Road"></span>
+                                                    <span class="stop-point" title="Hospital"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="arrival">
+                                            <span class="time">02:10 PM</span>
+                                            <span class="location">Bus Stand</span>
+                                        </div>
+                                    </div>
+                                    <div class="bus-fare">
+                                        <span class="fare">₹10</span>
+                                        <span class="per-person">per person</span>
+                                    </div>
+                                    <div class="bus-seats">
+                                        <span class="available-seats"><i class="fas fa-chair"></i> 5 seats available</span>
+                                    </div>
+                                    <div class="bus-action">
+                                        <a href="bus-details.html?id=210" class="btn btn-primary">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="pagination">
+                            <button class="pagination-btn prev-page" disabled>
+                                <i class="fas fa-chevron-left"></i> Previous
+                            </button>
+                            <div class="page-numbers">
+                                <button class="page-number active">1</button>
+                                <button class="page-number">2</button>
+                                <button class="page-number">3</button>
+                            </div>
+                            <button class="pagination-btn next-page">
+                                Next <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/images/logo.png" alt="IBBPS Logo">
+                    <h2>IBBPS</h2>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="search.html">Search Buses</a></li>
+                        <li><a href="pass-application.html">Monthly Pass</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="register.html">Register</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> IBBPS Office, Main Road, Ichalkaranji, Maharashtra</p>
+                    <p><i class="fas fa-phone"></i> +91 123-456-7890</p>
+                    <p><i class="fas fa-envelope"></i> info@ibbps.com</p>
+                </div>
+                <div class="footer-social">
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Ichalkaranji Bus Booking and Pass System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/busSearch.js"></script>
+</body>
+</html>
