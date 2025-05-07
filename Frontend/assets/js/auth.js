@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // Send login request to backend (simulated)
+            // Send login request to backend
             loginUser(email, password, rememberMe);
         });
     }
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // Send registration request to backend (simulated)
+            // Send registration request to backend
             registerUser(firstName, lastName, email, phone, password);
         });
     }
@@ -107,16 +107,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const googleLoginButtons = document.querySelectorAll('.btn-google');
     googleLoginButtons.forEach(button => {
         button.addEventListener('click', function() {
-            // Simulate Google login
-            showNotification('Google login functionality will be integrated with backend', 'info');
+            // Google login - this would typically redirect to Google OAuth
+            window.location.href = '/api/auth/google';
+            // If your backend doesn't support direct redirect, use a notification
+            // showNotification('Google login functionality will be integrated with backend', 'info');
         });
     });
     
     const facebookLoginButtons = document.querySelectorAll('.btn-facebook');
     facebookLoginButtons.forEach(button => {
         button.addEventListener('click', function() {
-            // Simulate Facebook login
-            showNotification('Facebook login functionality will be integrated with backend', 'info');
+            // Facebook login - this would typically redirect to Facebook OAuth
+            window.location.href = '/api/auth/facebook';
+            // If your backend doesn't support direct redirect, use a notification
+            // showNotification('Facebook login functionality will be integrated with backend', 'info');
         });
     });
     
@@ -130,6 +134,9 @@ document.addEventListener('DOMContentLoaded', function() {
             showForgotPasswordModal();
         });
     }
+
+    // Check if user is already logged in
+    checkAuthStatus();
 });
 
 // Helper functions
@@ -205,7 +212,7 @@ function showForgotPasswordModal() {
             return;
         }
         
-        // Send password reset request (simulated)
+        // Send password reset request
         sendPasswordResetEmail(email);
         
         // Close modal
@@ -233,24 +240,81 @@ function closeModal(modal) {
     }, 300);
 }
 
-// API simulation functions
+// API functions connecting to backend
+const API_BASE_URL = 'http://localhost:5000/api'; // Update this to your backend URL
+
+// Check if user is already logged in (using stored token)
+function checkAuthStatus() {
+    const token = localStorage.getItem('authToken');
+    
+    if (token) {
+        fetch(`${API_BASE_URL}/auth/verify`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Token expired or invalid');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // If we're on the login page but already logged in, redirect to dashboard
+            if (window.location.pathname.includes('login.html') || 
+                window.location.pathname.includes('register.html') ||
+                window.location.pathname === '/') {
+                window.location.href = 'dashboard.html';
+            }
+        })
+        .catch(error => {
+            console.error('Auth verification error:', error);
+            // Clear invalid token
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('currentUser');
+        });
+    } else {
+        // If we're on a protected page without being logged in, redirect to login
+        const protectedPages = ['dashboard.html', 'booking.html', 'pass-application.html'];
+        const currentPage = window.location.pathname.split('/').pop();
+        
+        if (protectedPages.includes(currentPage)) {
+            window.location.href = 'login.html';
+        }
+    }
+}
+
 function loginUser(email, password, rememberMe) {
-    // Simulate API call with timeout
-    setTimeout(() => {
-        // For demo purposes, accept any login
-        const user = {
-            id: 'user123',
-            firstName: 'Test',
-            lastName: 'User',
-            email: email,
-            phone: '1234567890'
-        };
+    // Show loading state
+    showNotification('Logging in...', 'info');
+    
+    fetch(`${API_BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                throw new Error(data.message || 'Login failed');
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Store user data
+        localStorage.setItem('currentUser', JSON.stringify(data.user));
+        localStorage.setItem('authToken', data.token);
         
-        // Store user in local storage
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        
-        // Set auth token (in real app, this would come from the server)
-        localStorage.setItem('authToken', 'dummy-auth-token-' + Math.random().toString(36).substring(2));
+        // Store remember me preference
+        if (rememberMe) {
+            localStorage.setItem('rememberMe', 'true');
+        } else {
+            localStorage.removeItem('rememberMe');
+        }
         
         // Show success message
         showNotification('Login successful', 'success');
@@ -259,26 +323,42 @@ function loginUser(email, password, rememberMe) {
         setTimeout(() => {
             window.location.href = 'dashboard.html';
         }, 1000);
-    }, 1500);
+    })
+    .catch(error => {
+        console.error('Login error:', error);
+        showNotification(error.message || 'Login failed', 'error');
+    });
 }
 
 function registerUser(firstName, lastName, email, phone, password) {
-    // Simulate API call with timeout
-    setTimeout(() => {
-        // For demo purposes, accept any registration
-        const user = {
-            id: 'user' + Math.floor(Math.random() * 1000),
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            phone: phone
-        };
-        
-        // Store user in local storage
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        
-        // Set auth token (in real app, this would come from the server)
-        localStorage.setItem('authToken', 'dummy-auth-token-' + Math.random().toString(36).substring(2));
+    // Show loading state
+    showNotification('Creating your account...', 'info');
+    
+    fetch(`${API_BASE_URL}/auth/register`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            firstName,
+            lastName,
+            email,
+            phone,
+            password
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                throw new Error(data.message || 'Registration failed');
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Store user data
+        localStorage.setItem('currentUser', JSON.stringify(data.user));
+        localStorage.setItem('authToken', data.token);
         
         // Show success message
         showNotification('Registration successful', 'success');
@@ -287,12 +367,66 @@ function registerUser(firstName, lastName, email, phone, password) {
         setTimeout(() => {
             window.location.href = 'dashboard.html';
         }, 1000);
-    }, 1500);
+    })
+    .catch(error => {
+        console.error('Registration error:', error);
+        showNotification(error.message || 'Registration failed', 'error');
+    });
 }
 
 function sendPasswordResetEmail(email) {
-    // Simulate API call
-    setTimeout(() => {
-        showNotification(`Password reset link sent to ${email}`, 'success');
-    }, 1500);
+    // Show loading state
+    showNotification('Sending reset link...', 'info');
+    
+    fetch(`${API_BASE_URL}/auth/forgot-password`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                throw new Error(data.message || 'Failed to send reset link');
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        showNotification(data.message || `Password reset link sent to ${email}`, 'success');
+    })
+    .catch(error => {
+        console.error('Password reset error:', error);
+        showNotification(error.message || 'Failed to send reset link', 'error');
+    });
 }
+
+// Function to logout user
+function logoutUser() {
+    const token = localStorage.getItem('authToken');
+    
+    if (token) {
+        fetch(`${API_BASE_URL}/auth/logout`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+        .finally(() => {
+            // Always clear local storage regardless of server response
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('currentUser');
+            
+            // Redirect to login page
+            window.location.href = 'login.html';
+        });
+    } else {
+        // If no token exists, just redirect
+        window.location.href = 'login.html';
+    }
+}
+
+// Expose logout function globally so it can be called from any page
+window.logoutUser = logoutUser;
