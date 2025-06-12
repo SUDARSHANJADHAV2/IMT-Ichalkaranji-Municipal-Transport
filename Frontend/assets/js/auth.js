@@ -248,7 +248,8 @@ function checkAuthStatus() {
     const token = localStorage.getItem('authToken');
     
     if (token) {
-        fetch(`${API_BASE_URL}/auth/verify`, {
+        // Changed URL from /auth/verify to /auth/me
+        fetch(`${API_BASE_URL}/auth/me`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -256,34 +257,72 @@ function checkAuthStatus() {
         })
         .then(response => {
             if (!response.ok) {
+                // If /me returns 401 or other error, token is invalid or expired
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('currentUser'); // Clear stale user data
                 throw new Error('Token expired or invalid');
             }
             return response.json();
         })
         .then(data => {
-            // If we're on the login page but already logged in, redirect to dashboard
-            if (window.location.pathname.includes('login.html') || 
-                window.location.pathname.includes('register.html') ||
-                window.location.pathname === '/') {
-                window.location.href = 'dashboard.html';
+            // data should contain { success: true, data: userObject } from /api/auth/me
+            if (data.success && data.data) {
+                localStorage.setItem('currentUser', JSON.stringify(data.data)); // Store/update user details
+
+                // If we're on the login page or register page but already logged in, redirect to dashboard
+                // Also, redirect from index.html if it's considered a non-auth page and user is logged in.
+                const nonAuthPages = ['login.html', 'register.html'];
+                const currentPath = window.location.pathname.split('/').pop();
+                // Consider if root path ('/' or 'index.html') should also redirect. For now, only login/register.
+                if (nonAuthPages.includes(currentPath) || (currentPath === '' && window.location.pathname === '/')) {
+                    window.location.href = 'dashboard.html'; // Or to a more appropriate landing page after login
+                }
+            } else {
+                // Handle cases where response is ok but data is not as expected (e.g. success: false)
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('currentUser');
+                console.warn('Auth check successful but no user data received:', data.message);
             }
         })
         .catch(error => {
-            console.error('Auth verification error:', error);
-            // Clear invalid token
+            console.error('Auth verification error:', error.message);
+            // Token is invalid or network error, ensure user is logged out client-side
             localStorage.removeItem('authToken');
             localStorage.removeItem('currentUser');
+            // Redirect to login if on a protected page (logic for this part is below)
+            handleAuthRedirects();
         });
     } else {
+        // No token found, ensure user is logged out client-side
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('currentUser');
         // If we're on a protected page without being logged in, redirect to login
-        const protectedPages = ['dashboard.html', 'booking.html', 'pass-application.html'];
+        const protectedPages = ['dashboard.html', 'booking.html', 'pass-application.html', 'profile.html']; // Added profile.html
         const currentPage = window.location.pathname.split('/').pop();
         
         if (protectedPages.includes(currentPage)) {
-            window.location.href = 'login.html';
+             // Add redirect query parameter
+            window.location.href = `login.html?redirect=${encodeURIComponent(currentPage + window.location.search)}`;
         }
     }
 }
+
+// Extracted redirect logic for protected pages to be called after failed auth check or if no token
+function handleAuthRedirects() {
+    const protectedPages = ['dashboard.html', 'booking.html', 'pass-application.html', 'profile.html'];
+    const currentPage = window.location.pathname.split('/').pop();
+    const currentQuery = window.location.search;
+
+    if (protectedPages.includes(currentPage)) {
+        let redirectUrl = 'login.html';
+        const originalTarget = currentPage + currentQuery;
+        if (originalTarget && originalTarget !== 'login.html') {
+            redirectUrl += `?redirect=${encodeURIComponent(originalTarget)}`;
+        }
+        window.location.href = redirectUrl;
+    }
+}
+
 
 function loginUser(email, password, rememberMe) {
     // Show loading state
@@ -406,24 +445,26 @@ function sendPasswordResetEmail(email) {
 function logoutUser() {
     const token = localStorage.getItem('authToken');
     
+    // Backend logout for JWT is often optional as token invalidation happens client-side
+    // or via token expiry. If backend does maintain a session or blacklist, this call is useful.
+    // Changed to GET to match typical simple JWT logout or to align if backend changes.
     if (token) {
-        fetch(`${API_BASE_URL}/auth/logout`, {
-            method: 'POST',
+        fetch(`${API_BASE_URL}/auth/logout`, { // Changed to GET
+            method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
+                'Authorization': `Bearer ${token}`
+                // No Content-Type needed for GET if no body
             }
         })
+        .catch(err => console.error("Error during server logout, proceeding with client logout:", err)) // Log error but still logout client-side
         .finally(() => {
-            // Always clear local storage regardless of server response
             localStorage.removeItem('authToken');
             localStorage.removeItem('currentUser');
-            
-            // Redirect to login page
             window.location.href = 'login.html';
         });
     } else {
-        // If no token exists, just redirect
+        localStorage.removeItem('authToken'); // Ensure cleared even if no token
+        localStorage.removeItem('currentUser');
         window.location.href = 'login.html';
     }
 }

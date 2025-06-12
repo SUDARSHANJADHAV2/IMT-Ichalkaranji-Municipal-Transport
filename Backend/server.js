@@ -10,6 +10,7 @@ const authRoutes = require('./routes/authRoutes');
 const busRoutes = require('./routes/busRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const passRoutes = require('./routes/passRoutes');
+const passApplicationRoutes = require('./routes/passApplicationRoutes'); // Added
 const adminRoutes = require('./routes/adminRoutes');
 
 // Load environment variables
@@ -23,7 +24,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Static files (for production)
+// Serve static files from the 'uploads' directory
+// This allows direct access to uploaded files via URL, e.g., /uploads/aadhaar/filename.pdf
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Static files (for production - for serving the main frontend build)
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../frontend')));
 }
@@ -33,6 +38,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/buses', busRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/passes', passRoutes);
+app.use('/api/pass-applications', passApplicationRoutes); // Added
 app.use('/api/admin', adminRoutes);
 
 // Catch-all route to serve frontend in production

@@ -7,7 +7,8 @@ const {
   getBookingById,
   getUserBookings,
   cancelBooking,
-  verifyBooking
+  verifyBooking,
+  getAllBookingsAdmin // Added new function
 } = require('../controllers/bookingController');
 const { protect, authorize } = require('../middleware/auth');
 
@@ -19,6 +20,7 @@ router.put('/:id/cancel', protect, cancelBooking);
 router.post('/:id/verify', protect, verifyBooking);
 
 // Admin routes
-router.get('/', protect, authorize('admin'), getBookings);
+router.get('/', protect, authorize('admin'), getBookings); // Existing admin route to get all bookings (potentially unpaginated)
+router.get('/all', protect, authorize('admin'), getAllBookingsAdmin); // New admin route for paginated and specific populated bookings
 
 module.exports = router;

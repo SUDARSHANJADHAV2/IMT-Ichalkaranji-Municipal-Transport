@@ -1,11 +1,32 @@
 // middleware/fileUpload.js
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
-/**
- * Configure storage for different file types
- */
-const storageConfig = multer.memoryStorage();
+// --- Storage Configurations ---
+
+// Memory storage (remains for other potential uses)
+const memoryStorage = multer.memoryStorage();
+
+// Disk storage for Aadhaar cards
+const aadhaarStoragePath = path.join(__dirname, '..', 'uploads', 'aadhaar');
+
+// Ensure the directory exists
+if (!fs.existsSync(aadhaarStoragePath)) {
+  fs.mkdirSync(aadhaarStoragePath, { recursive: true });
+}
+
+const aadhaarDiskStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, aadhaarStoragePath);
+  },
+  filename: function (req, file, cb) {
+    // Create a unique filename: fieldname-timestamp.extension
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
 
 /**
  * Validate file type based on allowed extensions
@@ -31,16 +52,29 @@ const fileFilter = (allowedExtensions) => (req, file, callback) => {
  */
 const upload = {
   /**
-   * Middleware for document uploads (Aadhaar, ID proofs)
+   * Middleware for general document uploads (uses memory storage)
    * @param {string} fieldName - Form field name
    */
-  document: (fieldName) => 
+  documentMemory: (fieldName) =>
     multer({
-      storage: storageConfig,
+      storage: memoryStorage, // Keep using memoryStorage for general docs if needed elsewhere
       limits: {
         fileSize: 5 * 1024 * 1024, // 5MB max file size
       },
       fileFilter: fileFilter(['.pdf', '.jpg', '.jpeg', '.png'])
+    }).single(fieldName),
+
+  /**
+   * Middleware specifically for Aadhaar card uploads (uses disk storage)
+   * @param {string} fieldName - Form field name (e.g., 'aadhaarCard')
+   */
+  aadhaarCardDisk: (fieldName) =>
+    multer({
+      storage: aadhaarDiskStorage,
+      limits: {
+        fileSize: 5 * 1024 * 1024, // 5MB max file size for Aadhaar
+      },
+      fileFilter: fileFilter(['.pdf', '.jpg', '.jpeg', '.png']) // Same filter for now
     }).single(fieldName),
   
   /**
@@ -49,7 +83,7 @@ const upload = {
    */
   profilePicture: (fieldName) => 
     multer({
-      storage: storageConfig,
+      storage: memoryStorage, // Assuming profile pics might also use memory or a different disk storage
       limits: {
         fileSize: 2 * 1024 * 1024, // 2MB max file size
       },
@@ -57,13 +91,13 @@ const upload = {
     }).single(fieldName),
   
   /**
-   * Middleware for multiple document uploads
+   * Middleware for multiple document uploads (uses memory storage)
    * @param {string} fieldName - Form field name
    * @param {number} maxCount - Maximum number of files
    */
-  multipleDocuments: (fieldName, maxCount = 3) => 
+  multipleDocumentsMemory: (fieldName, maxCount = 3) =>
     multer({
-      storage: storageConfig,
+      storage: memoryStorage,
       limits: {
         fileSize: 5 * 1024 * 1024, // 5MB max file size
         files: maxCount

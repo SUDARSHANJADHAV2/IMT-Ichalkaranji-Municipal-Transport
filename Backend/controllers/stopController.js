@@ -30,61 +30,89 @@ exports.getStopById = async (req, res) => {
 // Create a new stop
 exports.createStop = async (req, res) => {
   try {
-    const { name, location, description, coordinates } = req.body;
-    
-    // Check if stop with same name already exists
-    const existingStop = await Stop.findOne({ name });
-    if (existingStop) {
-      return errorResponse(res, 'Stop with this name already exists', 400);
+    const { name, address, longitude, latitude } = req.body;
+
+    if (!name) {
+      return errorResponse(res, 'Stop name is required.', 400);
     }
-    
-    const newStop = new Stop({
+
+    let locationPayload;
+    if (longitude !== undefined && latitude !== undefined) {
+      const lng = parseFloat(longitude);
+      const lat = parseFloat(latitude);
+      if (isNaN(lng) || isNaN(lat)) {
+        return errorResponse(res, 'Invalid longitude or latitude values.', 400);
+      }
+      locationPayload = {
+        type: 'Point',
+        coordinates: [lng, lat],
+      };
+    }
+
+    const stopData = {
       name,
-      location,
-      description,
-      coordinates
-    });
-    
+      address: address || undefined, // Store undefined if address is empty, so it's not set
+      location: locationPayload,
+    };
+
+    const newStop = new Stop(stopData);
     await newStop.save();
     return successResponse(res, 'Stop created successfully', newStop, 201);
   } catch (error) {
-    return errorResponse(res, 'Error creating stop', 500, error);
+    if (error.name === 'ValidationError') {
+        const messages = Object.values(error.errors).map(val => val.message);
+        return errorResponse(res, messages.join(', '), 400);
+    }
+    if (error.code === 11000) { // Duplicate key error for 'name'
+        return errorResponse(res, 'Stop with this name already exists.', 400);
+    }
+    console.error('Error creating stop:', error);
+    return errorResponse(res, 'Error creating stop.', 500, error.message);
   }
 };
 
 // Update a stop
 exports.updateStop = async (req, res) => {
   try {
-    const { name, location, description, coordinates } = req.body;
-    
-    // Check if stop exists
-    const stop = await Stop.findById(req.params.id);
+    const { name, address, longitude, latitude } = req.body;
+    const stopId = req.params.id;
+
+    const stop = await Stop.findById(stopId);
     if (!stop) {
       return errorResponse(res, 'Stop not found', 404);
     }
-    
-    // Check if updated name already exists for another stop
-    if (name && name !== stop.name) {
-      const existingStop = await Stop.findOne({ name });
-      if (existingStop) {
-        return errorResponse(res, 'Stop with this name already exists', 400);
+
+    if (name) stop.name = name;
+    if (address !== undefined) stop.address = address; // Allow setting address to empty string
+
+    if (longitude !== undefined && latitude !== undefined) {
+      const lng = parseFloat(longitude);
+      const lat = parseFloat(latitude);
+      if (isNaN(lng) || isNaN(lat)) {
+        return errorResponse(res, 'Invalid longitude or latitude values.', 400);
       }
+      stop.location = {
+        type: 'Point',
+        coordinates: [lng, lat],
+      };
+    } else if (longitude === undefined && latitude === undefined && (typeof req.body.longitude !== 'undefined' || typeof req.body.latitude !== 'undefined')) {
+      // If one is provided but not the other, or if they are explicitly set to null/empty to remove location
+      stop.location = undefined;
     }
-    
-    const updatedStop = await Stop.findByIdAndUpdate(
-      req.params.id,
-      {
-        name: name || stop.name,
-        location: location || stop.location,
-        description: description || stop.description,
-        coordinates: coordinates || stop.coordinates
-      },
-      { new: true }
-    );
-    
-    return successResponse(res, 'Stop updated successfully', updatedStop);
+
+
+    await stop.save();
+    return successResponse(res, 'Stop updated successfully', stop);
   } catch (error) {
-    return errorResponse(res, 'Error updating stop', 500, error);
+    if (error.name === 'ValidationError') {
+        const messages = Object.values(error.errors).map(val => val.message);
+        return errorResponse(res, messages.join(', '), 400);
+    }
+    if (error.code === 11000) { // Duplicate key error for 'name'
+        return errorResponse(res, 'Another stop with this name already exists.', 400);
+    }
+    console.error('Error updating stop:', error);
+    return errorResponse(res, 'Error updating stop.', 500, error.message);
   }
 };
 

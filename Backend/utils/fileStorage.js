@@ -1,98 +1,107 @@
-// utils/fileStorage.js
-const path = require('path');
-const fs = require('fs');
-const crypto = require('crypto');
+// Backend/utils/fileStorage.js
+const cloudinary = require('cloudinary').v2;
+const config = require('../config/config'); // To access .env variables
+const streamifier = require('streamifier');
 
-/**
- * Handle file storage operations for uploads
- */
-class FileStorage {
-  /**
-   * Save a file to the specified directory
-   * @param {Object} file - The uploaded file object from multer
-   * @param {string} directory - The subdirectory to save the file in
-   * @returns {Promise<string>} - The relative file path for database storage
-   */
-  static async saveFile(file, directory = 'documents') {
-    try {
-      // Create upload directory if it doesn't exist
-      const uploadPath = path.join(__dirname, '..', 'uploads', directory);
-      if (!fs.existsSync(uploadPath)) {
-        fs.mkdirSync(uploadPath, { recursive: true });
-      }
-      
-      // Generate a unique filename to prevent conflicts
-      const fileExtension = path.extname(file.originalname);
-      const fileName = `${crypto.randomBytes(16).toString('hex')}${fileExtension}`;
-      
-      // Create file path
-      const filePath = path.join(uploadPath, fileName);
-      
-      // Save the file
-      return new Promise((resolve, reject) => {
-        fs.writeFile(filePath, file.buffer, (err) => {
-          if (err) {
-            reject(err);
-            return;
-          }
-          
-          // Return the relative path for storage in the database
-          resolve(`/uploads/${directory}/${fileName}`);
-        });
-      });
-    } catch (error) {
-      console.error('Error saving file:', error);
-      throw error;
-    }
-  }
-  
-  /**
-   * Delete a file from storage
-   * @param {string} filePath - The relative file path
-   * @returns {Promise<boolean>} - Success status
-   */
-  static async deleteFile(filePath) {
-    try {
-      if (!filePath) return true;
-      
-      // Get absolute path by removing the leading slash and prepending the app root
-      const absolutePath = path.join(__dirname, '..', filePath.replace(/^\//, ''));
-      
-      // Check if file exists
-      if (fs.existsSync(absolutePath)) {
-        // Delete the file
-        fs.unlinkSync(absolutePath);
-      }
-      
-      return true;
-    } catch (error) {
-      console.error('Error deleting file:', error);
-      return false;
-    }
-  }
-  
-  /**
-   * Get a file's MIME type
-   * @param {string} filePath - Path to the file
-   * @returns {string} - MIME type of the file
-   */
-  static getFileMimeType(filePath) {
-    const extension = path.extname(filePath).toLowerCase();
-    
-    // Map of common extensions to MIME types
-    const mimeTypes = {
-      '.jpg': 'image/jpeg',
-      '.jpeg': 'image/jpeg',
-      '.png': 'image/png',
-      '.gif': 'image/gif',
-      '.pdf': 'application/pdf',
-      '.doc': 'application/msword',
-      '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      '.txt': 'text/plain'
-    };
-    
-    return mimeTypes[extension] || 'application/octet-stream';
-  }
+// Configure Cloudinary
+if (config.CLOUDINARY_CLOUD_NAME && config.CLOUDINARY_API_KEY && config.CLOUDINARY_API_SECRET) {
+  cloudinary.config({
+    cloud_name: config.CLOUDINARY_CLOUD_NAME,
+    api_key: config.CLOUDINARY_API_KEY,
+    api_secret: config.CLOUDINARY_API_SECRET,
+    secure: true, // Ensure HTTPS URLs
+  });
+} else {
+  console.warn('Cloudinary credentials not found in .env. File upload service will not work.');
 }
 
-module.exports = FileStorage;
+/**
+ * Uploads a file buffer to Cloudinary.
+ * @param {Buffer} fileBuffer The file buffer to upload.
+ * @param {string} folderName The name of the folder in Cloudinary to store the file.
+ * @param {string} [publicIdPrefix='doc'] Optional prefix for the public_id.
+ * @returns {Promise<object>} Promise resolving with Cloudinary upload result (secure_url, public_id, etc.).
+ * @throws {Error} If upload fails.
+ */
+const uploadToCloud = (fileBuffer, folderName, publicIdPrefix = 'doc') => {
+  return new Promise((resolve, reject) => {
+    if (!cloudinary.config().cloud_name) {
+      // Simulate success in dev if Cloudinary is not configured to avoid blocking flow
+      if (config.NODE_ENV === 'development') {
+          console.log(`DEV MODE: Simulating file upload for folder ${folderName}.`);
+          resolve({
+              secure_url: `https://res.cloudinary.com/demo/image/upload/v1580298900/samples/${publicIdPrefix}_simulated_${Date.now()}.jpg`,
+              public_id: `${folderName}/${publicIdPrefix}_simulated_${Date.now()}`
+          });
+          return;
+      }
+      return reject(new Error('Cloudinary not configured. Check .env variables.'));
+    }
+
+    // Generate a unique public_id to prevent overwrites and make it easier to manage
+    const uniquePublicId = `${folderName}/${publicIdPrefix}_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
+
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder: folderName,
+        public_id: uniquePublicId,
+        resource_type: 'auto', // Automatically detect resource type (image, pdf, raw)
+      },
+      (error, result) => {
+        if (error) {
+          console.error('Cloudinary upload error:', error);
+          return reject(new Error(`Cloudinary upload failed: ${error.message}`));
+        }
+        resolve(result);
+      }
+    );
+
+    // Use streamifier to pipe the buffer to Cloudinary's upload stream
+    streamifier.createReadStream(fileBuffer).pipe(uploadStream);
+  });
+};
+
+/**
+ * Deletes a file from Cloudinary using its public_id.
+ * @param {string} publicId The public_id of the file to delete.
+ * @returns {Promise<object>} Promise resolving with Cloudinary deletion result.
+ * @throws {Error} If deletion fails.
+ */
+const deleteFromCloud = (publicId) => {
+  return new Promise((resolve, reject) => {
+    if (!cloudinary.config().cloud_name) {
+       // Simulate success in dev if Cloudinary is not configured
+      if (config.NODE_ENV === 'development') {
+          console.log(`DEV MODE: Simulating deletion for public_id ${publicId}.`);
+          resolve({ result: 'ok (simulated)' });
+          return;
+      }
+      return reject(new Error('Cloudinary not configured. Check .env variables.'));
+    }
+    
+    // publicId might contain folder structure, which is fine for deletion.
+    // resource_type needs to be correctly identified or Cloudinary might not find it.
+    // For simplicity, 'image' is often default, use 'raw' for PDFs/non-image files if not auto-detected.
+    // 'auto' for resource_type in deletion is not standard. We might need to infer it or store it.
+    // For now, trying with 'image' and 'raw' as common types. A more robust solution might store resource_type.
+    cloudinary.uploader.destroy(publicId, { resource_type: 'image' }, (error, result) => {
+      if (error) {
+        // Try with 'raw' if 'image' failed (e.g., for PDFs)
+        cloudinary.uploader.destroy(publicId, { resource_type: 'raw' }, (errorRaw, resultRaw) => {
+             if (errorRaw) {
+                console.error(`Cloudinary deletion error for ${publicId} (tried image and raw):`, errorRaw);
+                return reject(new Error(`Cloudinary deletion failed: ${errorRaw.message}`));
+             }
+             resolve(resultRaw);
+        });
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+
+module.exports = {
+  uploadToCloud,
+  deleteFromCloud,
+};

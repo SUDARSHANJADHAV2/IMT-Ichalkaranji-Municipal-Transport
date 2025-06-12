@@ -3,281 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bus Pass Application - IBBPS</title>
+    <title>Monthly Pass Application - IBBPS</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .pass-application-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .form-section {
+            margin-bottom: 1.5rem;
+        }
+        .form-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: .5rem;
+            font-weight: bold;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="number"],
+        .form-group input[type="file"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+        .form-row .form-group {
+            flex: 1;
+        }
+        .status-message {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .status-message.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .loading-indicator { text-align: center; padding: 1rem; font-style: italic; }
+        #otp-section { margin-top: 1.5rem; border-top: 1px solid #eee; padding-top: 1.5rem;}
+    </style>
 </head>
 <body>
-    <!-- Header Section -->
     <header>
         <div class="container">
             <nav class="navbar">
-                <div class="logo">
-                    <a href="index.html">
-                        <img src="assets/images/logo.png" alt="IBBPS Logo">
-                        <span>IBBPS</span>
-                    </a>
+                <div class="navbar-brand">
+                    <img src="assets/images/logo.png" alt="IBBPS Logo" class="logo">
+                    <h1>IBBPS</h1>
                 </div>
-                <ul class="nav-links">
+                <ul class="nav-menu">
                     <li><a href="index.html">Home</a></li>
                     <li><a href="search.html">Search Buses</a></li>
-                    <li><a href="pass-application.html" class="active">Bus Pass</a></li>
-                    <li><a href="about.html">About</a></li>
+                    <li><a href="pass-application.html" class="active">Monthly Pass</a></li>
+                    <li><a href="profile.html" id="profileLink" style="display: none;">My Profile</a></li>
+                    <li><a href="login.html" id="loginLink" class="btn btn-primary">Login</a></li>
+                    <li><a href="#" id="logoutLink" class="btn btn-outline" style="display: none;">Logout</a></li>
                 </ul>
-                <div class="auth-buttons">
-                    <a href="dashboard.html" class="user-profile">
-                        <img src="assets/images/user-avatar.png" alt="User Profile">
-                        <span id="username">My Account</span>
-                    </a>
-                    <button id="logout-btn" class="btn btn-outline">Logout</button>
-                </div>
-                <div class="mobile-menu-btn">
-                    <i class="fas fa-bars"></i>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
                 </div>
             </nav>
         </div>
     </header>
 
-    <!-- Main Content -->
     <main>
-        <section class="pass-application-page">
-            <div class="container">
-                <div class="page-header">
-                    <h1>Monthly Bus Pass Application</h1>
-                    <p>Apply for a monthly bus pass with unlimited rides across Ichalkaranji city</p>
-                </div>
+        <div class="container">
+            <div class="pass-application-container">
+                <h2>Monthly Pass Application</h2>
+                <div id="loadingIndicator" class="loading-indicator" style="display: none;">Processing...</div>
+                <div id="statusMessageArea" class="status-message" style="display: none;"></div>
 
-                <div class="pass-application-container">
-                    <div class="pass-info-panel">
-                        <h3>Pass Information</h3>
-                        <div class="pass-types">
-                            <div class="pass-type-card active" data-type="student">
-                                <div class="pass-type-header">
-                                    <h4>Student Pass</h4>
-                                    <div class="price">₹300<span>/month</span></div>
-                                </div>
-                                <div class="pass-features">
-                                    <ul>
-                                        <li><i class="fas fa-check"></i> Unlimited rides in city limits</li>
-                                        <li><i class="fas fa-check"></i> Valid ID card required</li>
-                                        <li><i class="fas fa-check"></i> 50% discount on regular pass</li>
-                                    </ul>
-                                </div>
+                <form id="pass-application-form">
+                    <div class="form-section">
+                        <h3>Personal Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" name="firstName" required>
                             </div>
-                            <div class="pass-type-card" data-type="senior">
-                                <div class="pass-type-header">
-                                    <h4>Senior Citizen Pass</h4>
-                                    <div class="price">₹350<span>/month</span></div>
-                                </div>
-                                <div class="pass-features">
-                                    <ul>
-                                        <li><i class="fas fa-check"></i> Unlimited rides in city limits</li>
-                                        <li><i class="fas fa-check"></i> Age proof required (60+ years)</li>
-                                        <li><i class="fas fa-check"></i> 40% discount on regular pass</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="pass-type-card" data-type="regular">
-                                <div class="pass-type-header">
-                                    <h4>Regular Pass</h4>
-                                    <div class="price">₹600<span>/month</span></div>
-                                </div>
-                                <div class="pass-features">
-                                    <ul>
-                                        <li><i class="fas fa-check"></i> Unlimited rides in city limits</li>
-                                        <li><i class="fas fa-check"></i> Valid for 30 days from issue</li>
-                                        <li><i class="fas fa-check"></i> Available for all citizens</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="pass-type-card" data-type="ladies">
-                                <div class="pass-type-header">
-                                    <h4>Ladies Special Pass</h4>
-                                    <div class="price">₹400<span>/month</span></div>
-                                </div>
-                                <div class="pass-features">
-                                    <ul>
-                                        <li><i class="fas fa-check"></i> Unlimited rides in city limits</li>
-                                        <li><i class="fas fa-check"></i> Valid ID proof required</li>
-                                        <li><i class="fas fa-check"></i> 33% discount on regular pass</li>
-                                    </ul>
-                                </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" required>
                             </div>
                         </div>
-                        
-                        <div class="pass-instructions">
-                            <h4><i class="fas fa-info-circle"></i> Important Instructions</h4>
-                            <ul>
-                                <li>Pass will be issued after verification of your documents</li>
-                                <li>Aadhaar verification is mandatory for all pass types</li>
-                                <li>Category-specific documents are required (student ID, age proof, etc.)</li>
-                                <li>Processing may take up to 48 hours after submission</li>
-                                <li>Digital pass will be sent to your registered mobile number</li>
-                            </ul>
+                        <div class="form-group">
+                            <label for="age">Age</label>
+                            <input type="number" id="age" name="age" min="5" max="120" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Full Address</label>
+                            <textarea id="address" name="address" required></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="text" id="phone" name="phone" required pattern="^\d{10}$" title="Enter a 10-digit phone number">
+                            </div>
                         </div>
                     </div>
 
-                    <div class="application-form-container">
-                        <h3>Personal Information</h3>
-                        <form id="pass-application-form" class="application-form">
+                    <div class="form-section">
+                        <h3>Pass Details</h3>
+                        <div class="form-row">
                             <div class="form-group">
-                                <label for="pass-type">Pass Type</label>
-                                <select id="pass-type" required>
-                                    <option value="student">Student Pass - ₹300/month</option>
-                                    <option value="senior">Senior Citizen Pass - ₹350/month</option>
-                                    <option value="regular">Regular Pass - ₹600/month</option>
-                                    <option value="ladies">Ladies Special Pass - ₹400/month</option>
+                                <label for="passType">Pass Type</label>
+                                <select id="passType" name="passType" required>
+                                    <option value="">Select Pass Type</option>
+                                    <option value="student">Student</option>
+                                    <option value="senior_citizen">Senior Citizen</option>
+                                    <option value="general">General</option>
+                                    <option value="disabled">Disabled Person</option>
                                 </select>
                             </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="applicant-name">Full Name</label>
-                                    <input type="text" id="applicant-name" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="applicant-age">Age</label>
-                                    <input type="number" id="applicant-age" min="5" max="100" required>
-                                </div>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="applicant-mobile">Mobile Number</label>
-                                    <input type="tel" id="applicant-mobile" pattern="[0-9]{10}" required>
-                                    <small>OTP will be sent to this number</small>
-                                </div>
-                                <div class="form-group">
-                                    <label for="applicant-email">Email</label>
-                                    <input type="email" id="applicant-email" required>
-                                </div>
-                            </div>
-                            
                             <div class="form-group">
-                                <label for="applicant-address">Full Address</label>
-                                <textarea id="applicant-address" rows="3" required></textarea>
+                                <label for="duration">Pass Duration</label>
+                                <select id="duration" name="duration" required>
+                                    <option value="">Select Duration</option>
+                                    <option value="monthly">Monthly</option>
+                                    <option value="quarterly">Quarterly</option>
+                                    <option value="half_yearly">Half-Yearly</option>
+                                    <option value="yearly">Yearly</option>
+                                </select>
                             </div>
-                            
-                            <div class="form-group">
-                                <label for="aadhaar-number">Aadhaar Number</label>
-                                <input type="text" id="aadhaar-number" pattern="[0-9]{12}" required>
-                                <small>12-digit Aadhaar number without spaces</small>
-                            </div>
-                            
-                            <div class="form-group file-upload">
-                                <label for="aadhaar-upload">Upload Aadhaar Card (PDF/JPG/PNG)</label>
-                                <div class="upload-area">
-                                    <input type="file" id="aadhaar-upload" accept=".pdf,.jpg,.jpeg,.png" required>
-                                    <div class="upload-placeholder">
-                                        <i class="fas fa-cloud-upload-alt"></i>
-                                        <p>Drag and drop or click to upload</p>
-                                        <small>Maximum file size: 2MB</small>
-                                    </div>
-                                    <div class="upload-preview" style="display: none;">
-                                        <div class="file-info">
-                                            <i class="fas fa-file-alt"></i>
-                                            <span class="file-name">document.pdf</span>
-                                        </div>
-                                        <button type="button" class="remove-file"><i class="fas fa-times"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="id-proof-section" id="student-id-section" style="display: block;">
-                                <div class="form-group file-upload">
-                                    <label for="student-id-upload">Upload Student ID Card (PDF/JPG/PNG)</label>
-                                    <div class="upload-area">
-                                        <input type="file" id="student-id-upload" accept=".pdf,.jpg,.jpeg,.png" required>
-                                        <div class="upload-placeholder">
-                                            <i class="fas fa-cloud-upload-alt"></i>
-                                            <p>Drag and drop or click to upload</p>
-                                            <small>Maximum file size: 2MB</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="otp-verification" style="display: none;">
-                                <h4>OTP Verification</h4>
-                                <p>We've sent a 6-digit OTP to <span id="masked-mobile">+91 XXXXX-X5678</span></p>
-                                <div class="otp-input-group">
-                                    <input type="text" maxlength="1" class="otp-input" required>
-                                    <input type="text" maxlength="1" class="otp-input" required>
-                                    <input type="text" maxlength="1" class="otp-input" required>
-                                    <input type="text" maxlength="1" class="otp-input" required>
-                                    <input type="text" maxlength="1" class="otp-input" required>
-                                    <input type="text" maxlength="1" class="otp-input" required>
-                                </div>
-                                <div class="otp-actions">
-                                    <button type="button" id="verify-otp" class="btn btn-primary">Verify OTP</button>
-                                    <button type="button" id="resend-otp" class="btn btn-text">Resend OTP (30s)</button>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group terms">
-                                <input type="checkbox" id="terms-checkbox" required>
-                                <label for="terms-checkbox">I confirm that all the information provided is accurate and I agree to the <a href="#">Terms & Conditions</a></label>
-                            </div>
-
-                            <button type="submit" id="submit-application" class="btn btn-primary btn-block">Submit Application</button>
-                            <button type="button" id="request-otp" class="btn btn-primary btn-block" style="display: none;">Request OTP</button>
-                        </form>
+                        </div>
                     </div>
+
+                    <div class="form-section">
+                        <h3>Document Upload</h3>
+                        <div class="form-group">
+                            <label for="aadhaarCard">Upload Aadhaar Card (PDF, JPG, PNG)</label>
+                            <input type="file" id="aadhaarCard" name="aadhaarCard" accept=".pdf,.jpg,.jpeg,.png" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submitApplicationBtn" class="btn btn-primary btn-block">Submit Application & Request OTP</button>
+                </form>
+
+                <div id="otp-section" style="display: none;">
+                    <h3>OTP Verification</h3>
+                    <p id="otpMessageArea">OTP has been sent to your phone number.</p>
+                    <div class="form-group">
+                        <label for="otp-input">Enter OTP</label>
+                        <input type="text" id="otp-input" name="otp" maxlength="6" pattern="\d{6}" title="Enter 6-digit OTP">
+                    </div>
+                    <button type="button" id="verify-otp-button" class="btn btn-primary btn-block">Verify OTP</button>
                 </div>
             </div>
-        </section>
+        </div>
     </main>
 
-    <!-- Footer Section -->
     <footer>
         <div class="container">
-            <div class="footer-content">
+             <div class="footer-content">
                 <div class="footer-logo">
                     <img src="assets/images/logo.png" alt="IBBPS Logo">
-                    <h3>Ichalkaranji Bus Booking and Pass System</h3>
+                    <h2>IBBPS</h2>
                 </div>
                 <div class="footer-links">
-                    <div class="footer-column">
-                        <h4>Quick Links</h4>
-                        <ul>
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="search.html">Search Buses</a></li>
-                            <li><a href="pass-application.html">Bus Pass</a></li>
-                            <li><a href="about.html">About Us</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-column">
-                        <h4>Support</h4>
-                        <ul>
-                            <li><a href="#">FAQs</a></li>
-                            <li><a href="#">Contact Us</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Terms of Service</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-column">
-                        <h4>Contact</h4>
-                        <address>
-                            <p><i class="fas fa-map-marker-alt"></i> Transport Bhavan, Ichalkaranji</p>
-                            <p><i class="fas fa-phone"></i> +91 2324 123456</p>
-                            <p><i class="fas fa-envelope"></i> info@ibbps.gov.in</p>
-                        </address>
-                    </div>
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="search.html">Search Buses</a></li>
+                        <li><a href="pass-application.html">Monthly Pass</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> IBBPS Office, Main Road, Ichalkaranji</p>
+                    <p><i class="fas fa-phone"></i> +91 123-456-7890</p>
+                    <p><i class="fas fa-envelope"></i> info@ibbps.com</p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Ichalkaranji Bus Booking and Pass System. All rights reserved.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
+                <p>&copy; <span id="currentYear"></span> Ichalkaranji Bus Booking and Pass System. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <script src="assets/js/main.js"></script>
+    <script src="assets/js/auth.js"></script> <!-- For auth status and user data -->
+    <script src="assets/js/main.js"></script> <!-- For general UI like hamburger -->
     <script src="assets/js/passApplication.js"></script>
 </body>
 </html>

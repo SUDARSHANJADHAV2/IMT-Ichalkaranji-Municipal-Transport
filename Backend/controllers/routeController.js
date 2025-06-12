@@ -31,45 +31,61 @@ exports.getRouteById = async (req, res) => {
 // Create a new route
 exports.createRoute = async (req, res) => {
   try {
-    const { name, description, stops } = req.body;
+    const { name, stops, distance, estimatedDuration, isActive, operationalStartTime, operationalEndTime } = req.body;
     
-    // Validate stops
+    if (!name) {
+        return errorResponse(res, 'Route name is required.', 400);
+    }
+    if (!operationalStartTime || !operationalEndTime) {
+        return errorResponse(res, 'Operational start and end times are required.', 400);
+    }
+    // Validate stops (Model also has this validation, but good to have here too)
     if (!stops || !Array.isArray(stops) || stops.length < 2) {
-      return errorResponse(res, 'At least two stops are required', 400);
+      return errorResponse(res, 'A route must have at least two stops.', 400);
     }
     
     // Verify all stops exist
     for (const stopId of stops) {
       const stopExists = await Stop.findById(stopId);
       if (!stopExists) {
-        return errorResponse(res, `Stop with ID ${stopId} not found`, 404);
+        return errorResponse(res, `Stop with ID ${stopId} not found. Please ensure all stop IDs are valid.`, 404);
       }
     }
     
-    const newRoute = new Route({
-      name,
-      description,
-      stops
-    });
+    const newRouteData = { name, stops, operationalStartTime, operationalEndTime };
+    if (distance !== undefined) newRouteData.distance = parseFloat(distance);
+    if (estimatedDuration !== undefined) newRouteData.estimatedDuration = parseInt(estimatedDuration, 10);
+    if (isActive !== undefined) newRouteData.isActive = isActive;
+
+
+    const newRoute = new Route(newRouteData);
     
     await newRoute.save();
     
     // Populate stops for response
-    const populatedRoute = await Route.findById(newRoute._id).populate('stops');
+    const populatedRoute = await Route.findById(newRoute._id).populate('stops', 'name location'); // Select specific fields from Stop
     
     return successResponse(res, 'Route created successfully', populatedRoute, 201);
   } catch (error) {
-    return errorResponse(res, 'Error creating route', 500, error);
+    if (error.name === 'ValidationError') {
+        const messages = Object.values(error.errors).map(val => val.message);
+        return errorResponse(res, messages.join(', '), 400);
+    }
+    if (error.code === 11000) { // Duplicate key error (e.g. for unique route name)
+        return errorResponse(res, 'Route name already exists.', 400);
+    }
+    return errorResponse(res, 'Error creating route', 500, error.message);
   }
 };
 
 // Update a route
 exports.updateRoute = async (req, res) => {
   try {
-    const { name, description, stops } = req.body;
-    
+    const { name, stops, distance, estimatedDuration, isActive, operationalStartTime, operationalEndTime } = req.body;
+    const routeId = req.params.id;
+
     // Check if route exists
-    const route = await Route.findById(req.params.id);
+    const route = await Route.findById(routeId);
     if (!route) {
       return errorResponse(res, 'Route not found', 404);
     }
@@ -77,31 +93,39 @@ exports.updateRoute = async (req, res) => {
     // Validate stops if provided
     if (stops) {
       if (!Array.isArray(stops) || stops.length < 2) {
-        return errorResponse(res, 'At least two stops are required', 400);
+        return errorResponse(res, 'A route must have at least two stops.', 400);
       }
-      
       // Verify all stops exist
       for (const stopId of stops) {
         const stopExists = await Stop.findById(stopId);
         if (!stopExists) {
-          return errorResponse(res, `Stop with ID ${stopId} not found`, 404);
+          return errorResponse(res, `Stop with ID ${stopId} not found. Please ensure all stop IDs are valid.`, 404);
         }
       }
+      route.stops = stops;
     }
+
+    if (name) route.name = name;
+    if (distance !== undefined) route.distance = parseFloat(distance);
+    if (estimatedDuration !== undefined) route.estimatedDuration = parseInt(estimatedDuration, 10);
+    if (isActive !== undefined) route.isActive = isActive;
+    if (operationalStartTime) route.operationalStartTime = operationalStartTime;
+    if (operationalEndTime) route.operationalEndTime = operationalEndTime;
     
-    const updatedRoute = await Route.findByIdAndUpdate(
-      req.params.id,
-      {
-        name: name || route.name,
-        description: description || route.description,
-        stops: stops || route.stops
-      },
-      { new: true }
-    ).populate('stops');
+    await route.save();
     
-    return successResponse(res, 'Route updated successfully', updatedRoute);
+    const updatedPopulatedRoute = await Route.findById(routeId).populate('stops', 'name location');
+
+    return successResponse(res, 'Route updated successfully', updatedPopulatedRoute);
   } catch (error) {
-    return errorResponse(res, 'Error updating route', 500, error);
+    if (error.name === 'ValidationError') {
+        const messages = Object.values(error.errors).map(val => val.message);
+        return errorResponse(res, messages.join(', '), 400);
+    }
+     if (error.code === 11000) { // Duplicate key error (e.g. for unique route name)
+        return errorResponse(res, 'Route name already exists.', 400);
+    }
+    return errorResponse(res, 'Error updating route', 500, error.message);
   }
 };
 

@@ -1,89 +1,85 @@
 const mongoose = require('mongoose');
 
 const PassApplicationSchema = new mongoose.Schema({
-  user: {
+  user: { // User applying for the pass
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
-  name: {
+  passType: { // Type of pass
     type: String,
-    required: [true, 'Please provide name'],
+    required: [true, 'Pass type is required'],
+    enum: ['student', 'senior_citizen', 'general', 'disabled']
+  },
+  duration: { // Duration of the pass
+    type: String,
+    required: [true, 'Pass duration is required'],
+    enum: ['monthly', 'quarterly', 'half_yearly', 'yearly']
+  },
+  firstName: { // Applicant's first name
+    type: String,
+    required: [true, 'First name is required'],
+    trim: true
+  },
+  lastName: { // Applicant's last name
+    type: String,
+    required: [true, 'Last name is required'],
     trim: true
   },
   age: {
     type: Number,
-    required: [true, 'Please provide age']
-  },
-  gender: {
-    type: String,
-    enum: ['male', 'female', 'other'],
-    required: [true, 'Please provide gender']
-  },
-  category: {
-    type: String,
-    enum: ['student', 'senior', 'regular', 'disabled'],
-    required: [true, 'Please provide category']
-  },
-  mobile: {
-    type: String,
-    required: [true, 'Please provide mobile number'],
-    match: [/^\d{10}$/, 'Phone number must be 10 digits']
-  },
-  email: {
-    type: String,
-    required: [true, 'Please provide email'],
-    match: [
-      /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-      'Please provide a valid email'
-    ]
+    required: [true, 'Age is required'],
+    min: [5, 'Age must be at least 5'], // Example validation
+    max: [120, 'Age must be reasonable'] // Example validation
   },
   address: {
     type: String,
-    required: [true, 'Please provide address']
+    required: [true, 'Address is required'],
+    trim: true
   },
-  source: {
+  email: { // Applicant's email (can be pre-filled from User)
     type: String,
-    required: [true, 'Please provide source location']
+    required: [true, 'Email is required'],
+    trim: true,
+    lowercase: true,
+    match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please provide a valid email']
   },
-  destination: {
+  phone: { // Applicant's phone number for OTP and contact
     type: String,
-    required: [true, 'Please provide destination location']
+    required: [true, 'Phone number is required'],
+    trim: true
+    // Add regex validation for phone if needed, e.g., /^\d{10}$/ for Indian numbers
   },
-  validityPeriod: {
-    type: Number,
-    enum: [1, 3, 6, 12], // Number of months
-    required: [true, 'Please provide validity period']
-  },
-  aadhaarDocument: {
+  aadhaarCardUrl: { // URL of the uploaded Aadhaar card (from Cloudinary/local storage)
     type: String,
-    required: [true, 'Please upload Aadhaar document']
+    required: [true, 'Aadhaar card URL is required']
   },
-  photo: {
+  status: {
+    type: String,
+    enum: ['pending_otp', 'pending_approval', 'approved', 'rejected'],
+    default: 'pending_otp'
+  },
+  otp: { // Store HASHED OTP
     type: String
   },
-  applicationStatus: {
-    type: String,
-    enum: ['pending', 'verified', 'approved', 'rejected'],
-    default: 'pending'
-  },
-  verificationOTP: {
-    type: String
-  },
-  verificationOTPExpire: {
+  otpExpires: { // Expiry date/time for the OTP
     type: Date
   },
-  isOTPVerified: {
-    type: Boolean,
-    default: false
+  rejectionReason: { // Reason if the application is rejected by an admin
+    type: String,
+    trim: true
   },
-  rejectionReason: {
-    type: String
+  // appliedOn is handled by timestamps.createdAt
+  approvedBy: { // Admin user who approved the application
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
+  passId: { // Link to the actual Pass document once created
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Pass'
   }
+}, {
+  timestamps: true // Adds createdAt and updatedAt automatically
 });
 
 module.exports = mongoose.model('PassApplication', PassApplicationSchema);

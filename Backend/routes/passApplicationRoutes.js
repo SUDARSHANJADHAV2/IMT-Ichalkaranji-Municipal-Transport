@@ -1,27 +1,63 @@
-// routes/passApplicationRoutes.js
 const express = require('express');
 const router = express.Router();
 const { 
-  createPassApplication,
-  getAllPassApplications,
-  getPassApplicationById,
-  updatePassApplicationStatus,
-  getUserPassApplications,
-  approvePassApplication,
-  rejectPassApplication
+  submitPassApplication,
+  verifyOtpForPass,
+  getPendingApplications, // Added
+  approvePassApplication, // Added
+  rejectPassApplication   // Added
+  // Add other functions like getUserPassApplications, getPassApplicationById later if needed
 } = require('../controllers/passApplicationController');
-const { protect, authorize } = require('../middleware/auth');
-const { uploadMiddleware } = require('../middleware/fileUpload');
+const { protect, authorize } = require('../middleware/auth'); // authorize is now needed
+const { upload, handleMulterError } = require('../middleware/fileUpload'); // Keep handleMulterError
 
-// Protected routes
-router.post('/', protect, uploadMiddleware, createPassApplication);
-router.get('/me', protect, getUserPassApplications);
-router.get('/:id', protect, getPassApplicationById);
+// --- User Routes ---
 
-// Admin routes
-router.get('/', protect, authorize('admin'), getAllPassApplications);
-router.put('/:id/status', protect, authorize('admin'), updatePassApplicationStatus);
-router.put('/:id/approve', protect, authorize('admin'), approvePassApplication);
-router.put('/:id/reject', protect, authorize('admin'), rejectPassApplication);
+// Route to submit a new pass application
+// Uses protect middleware for authentication
+// Uses upload.aadhaarCardDisk middleware for handling 'aadhaarCard' file upload
+// Uses handleMulterError to catch file upload specific errors
+router.post(
+  '/',
+  protect,
+  upload.aadhaarCardDisk('aadhaarCard'), // Use the new disk storage uploader for this specific field
+  handleMulterError, // Important to handle errors from multer
+  submitPassApplication
+);
+
+// Route to verify OTP for a pass application
+router.post(
+  '/verify-otp',
+  protect,
+  verifyOtpForPass
+);
+
+// Example for fetching user's own applications (can be added fully later)
+// router.get('/me', protect, getUserPassApplications);
+
+// Example for fetching a specific application by ID (can be added fully later)
+// router.get('/:id', protect, getPassApplicationById);
+
+// --- Admin Routes ---
+router.get(
+    '/pending',
+    protect,
+    authorize('admin'),
+    getPendingApplications
+);
+
+router.put(
+    '/:id/approve',
+    protect,
+    authorize('admin'),
+    approvePassApplication
+);
+
+router.put(
+    '/:id/reject',
+    protect,
+    authorize('admin'),
+    rejectPassApplication
+);
 
 module.exports = router;

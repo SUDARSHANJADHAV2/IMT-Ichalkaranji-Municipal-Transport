@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Buses - IBBPS Admin</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <style>
+        /* Admin common styles - can be moved to a shared admin.css */
+        .admin-container { display: flex; min-height: calc(100vh - 120px); }
+        .admin-sidebar { width: 250px; background-color: #f4f4f4; padding: 1rem; border-right: 1px solid #ddd; }
+        .admin-sidebar h2 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--primary-color); }
+        .admin-sidebar ul { list-style: none; padding: 0; }
+        .admin-sidebar ul li a { display: block; padding: 0.75rem 1rem; color: #333; text-decoration: none; border-radius: 4px; margin-bottom: 0.5rem; transition: background-color 0.3s ease; }
+        .admin-sidebar ul li a:hover, .admin-sidebar ul li a.active { background-color: var(--primary-color); color: #fff; }
+        .admin-main-content { flex-grow: 1; padding: 2rem; background-color: #fff; }
+        .admin-main-content h1 { margin-bottom: 1.5rem; }
+
+        /* Table styles */
+        table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+        table th, table td { border: 1px solid #ddd; padding: 0.75rem; text-align: left; vertical-align: middle; }
+        table th { background-color: #f0f0f0; }
+        table tr:nth-child(even) { background-color: #f9f9f9; }
+        .actions-cell button { margin-right: 5px; padding: 5px 8px; font-size: 0.85rem; }
+
+        /* Modal styles */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
+        .modal-content { background-color: #fff; margin: 5% auto; padding: 25px; border-radius: 8px; width: 90%; max-width: 600px; position: relative; }
+        .modal-close { position: absolute; top: 10px; right: 20px; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .modal-content h2 { margin-top: 0; margin-bottom: 1.5rem; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; margin-bottom: .5rem; font-weight: bold; }
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group select,
+        .form-group textarea { width: 100%; padding: 0.65rem; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .form-group textarea { resize: vertical; min-height: 70px; }
+        .form-group .checkbox-label { display: flex; align-items: center; }
+        .form-group .checkbox-label input { width: auto; margin-right: 0.5rem; }
+
+        .status-message { padding: 1rem; margin-bottom: 1rem; border-radius: 4px; text-align: center; }
+        .status-message.success { background-color: #d4edda; color: #155724; }
+        .status-message.error { background-color: #f8d7da; color: #721c24; }
+        .loading-indicator { text-align: center; padding: 1rem; font-style: italic; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-brand">
+                    <img src="../assets/images/logo.png" alt="IBBPS Logo" class="logo">
+                    <h1>IBBPS - Admin</h1>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="../index.html">Main Site</a></li>
+                    <li><a href="#" id="logoutLinkAdmin">Logout</a></li>
+                </ul>
+                <div class="hamburger admin-hamburger">
+                    <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <h2>Admin Menu</h2>
+            <ul>
+                <li><a href="index.html">Dashboard Home</a></li>
+                <li><a href="pass-applications.html">Pass Applications</a></li>
+                <li><a href="manage-buses.html" class="active">Manage Buses</a></li>
+                <!-- Add more admin links here -->
+            </ul>
+        </aside>
+        <main class="admin-main-content">
+            <h1>Manage Buses</h1>
+            <button id="addNewBusBtn" class="btn btn-primary" style="margin-bottom: 1rem;">Add New Bus</button>
+
+            <div id="loadingIndicatorBuses" class="loading-indicator" style="display: none;">Loading buses...</div>
+            <div id="statusMessageBuses" class="status-message" style="display: none;"></div>
+
+            <table id="buses-table">
+                <thead>
+                    <tr>
+                        <th>Bus Number</th>
+                        <th>Type</th>
+                        <th>Capacity</th>
+                        <th>Route</th>
+                        <th>Fare (Base)</th>
+                        <th>Active</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="buses-table-body">
+                    <!-- Bus rows will be populated by JavaScript -->
+                </tbody>
+            </table>
+            <p id="no-buses-message" style="display: none;">No buses found. Click "Add New Bus" to create one.</p>
+        </main>
+    </div>
+
+    <!-- Bus Form Modal (Add/Edit) -->
+    <div id="bus-form-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" id="close-bus-modal">&times;</span>
+            <h2 id="bus-modal-title">Add New Bus</h2>
+            <div id="bus-modal-error" class="status-message error" style="display:none;"></div>
+            <form id="bus-form">
+                <input type="hidden" id="busId" name="busId">
+                <div class="form-group">
+                    <label for="busNumber">Bus Number</label>
+                    <input type="text" id="busNumber" name="busNumber" required>
+                </div>
+                <div class="form-group">
+                    <label for="busType">Bus Type</label>
+                    <select id="busType" name="busType" required>
+                        <option value="">Select Type</option>
+                        <option value="Ordinary">Ordinary</option>
+                        <option value="Express">Express</option>
+                        <option value="AC">AC</option>
+                        <option value="Sleeper">Sleeper</option>
+                        <option value="Semi-Sleeper">Semi-Sleeper</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="capacity">Capacity</label>
+                    <input type="number" id="capacity" name="capacity" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="routeId">Route</label>
+                    <select id="routeId" name="route" required>
+                        <option value="">Loading routes...</option>
+                        <!-- Routes populated by JavaScript -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="fare">Base Fare (₹)</label>
+                    <input type="number" id="fare" name="fare" min="0" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="features">Features (comma-separated)</label>
+                    <textarea id="features" name="features" placeholder="e.g., WiFi, Charging Port, GPS"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="isActive" name="isActive" checked>
+                        Is Active
+                    </label>
+                </div>
+                <button type="submit" id="saveBusBtn" class="btn btn-primary">Save Bus</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear">2024</span> Ichalkaranji Bus Booking and Pass System. Admin Panel.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../assets/js/auth.js"></script>
+    <script src="assets/js/admin-common.js"></script> <!-- Added common script -->
+    <script src="assets/js/admin-buses.js"></script>
+    <script>
+        // Basic auth check and common admin UI elements
+        document.addEventListener('DOMContentLoaded', () => {
+            const loggedInUser = JSON.parse(localStorage.getItem('userData'));
+            const token = localStorage.getItem('authToken');
+
+            if (!token || !loggedInUser || loggedInUser.role !== 'admin') {
+                alert('Access Denied. You must be an admin to view this page.');
+                window.location.href = '../login.html?redirect=' + encodeURIComponent(window.location.pathname);
+            }
+
+            const logoutLinkAdmin = document.getElementById('logoutLinkAdmin');
+            if (logoutLinkAdmin) {
+                logoutLinkAdmin.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('userData');
+                    window.location.href = '../login.html';
+                });
+            }
+            const yearSpan = document.getElementById('currentYear');
+            if(yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+            // Hamburger menu for admin (if not already in a global admin script)
+            const hamburger = document.querySelector('.hamburger.admin-hamburger');
+            const navMenu = document.querySelector('header .nav-menu'); // Assuming admin header uses same nav-menu class
+            if (hamburger && navMenu) {
+                hamburger.addEventListener('click', () => {
+                    hamburger.classList.toggle('active');
+                    navMenu.classList.toggle('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

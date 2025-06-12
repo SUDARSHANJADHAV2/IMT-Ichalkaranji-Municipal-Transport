@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Pass Applications - IBBPS Admin</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+    <style>
+        .admin-container { display: flex; min-height: calc(100vh - 120px); }
+        .admin-sidebar { width: 250px; background-color: #f4f4f4; padding: 1rem; border-right: 1px solid #ddd; }
+        .admin-sidebar h2 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--primary-color); }
+        .admin-sidebar ul { list-style: none; padding: 0; }
+        .admin-sidebar ul li a { display: block; padding: 0.75rem 1rem; color: #333; text-decoration: none; border-radius: 4px; margin-bottom: 0.5rem; transition: background-color 0.3s ease; }
+        .admin-sidebar ul li a:hover, .admin-sidebar ul li a.active { background-color: var(--primary-color); color: #fff; }
+        .admin-main-content { flex-grow: 1; padding: 2rem; background-color: #fff; }
+        .admin-main-content h1 { margin-bottom: 1.5rem; }
+
+        table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+        table th, table td { border: 1px solid #ddd; padding: 0.75rem; text-align: left; }
+        table th { background-color: #f0f0f0; }
+        table tr:nth-child(even) { background-color: #f9f9f9; }
+        .actions-cell button { margin-right: 5px; padding: 5px 10px; }
+
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
+        .modal-content { background-color: #fff; margin: 10% auto; padding: 20px; border-radius: 8px; width: 80%; max-width: 600px; position: relative; }
+        .modal-close { position: absolute; top: 10px; right: 20px; font-size: 24px; font-weight: bold; cursor: pointer; }
+        .modal-content img { max-width: 100%; height: auto; display: block; margin: 1rem 0; }
+        .modal-content textarea { width: calc(100% - 40px); margin: 10px 0; padding: 10px; min-height: 80px; border-radius: 4px; border: 1px solid #ccc;}
+
+        .status-message { padding: 1rem; margin-bottom: 1rem; border-radius: 4px; text-align: center; }
+        .status-message.success { background-color: #d4edda; color: #155724; }
+        .status-message.error { background-color: #f8d7da; color: #721c24; }
+        .loading-indicator { text-align: center; padding: 1rem; font-style: italic; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="navbar-brand">
+                    <img src="../assets/images/logo.png" alt="IBBPS Logo" class="logo">
+                    <h1>IBBPS - Admin</h1>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="../index.html">Main Site</a></li>
+                    <li><a href="#" id="logoutLinkAdmin">Logout</a></li>
+                </ul>
+                 <div class="hamburger admin-hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <h2>Admin Menu</h2>
+            <ul>
+                <li><a href="index.html">Dashboard Home</a></li>
+                <li><a href="pass-applications.html" class="active">Pass Applications</a></li>
+            </ul>
+        </aside>
+        <main class="admin-main-content">
+            <h1>Pending Pass Applications</h1>
+            <div id="loadingIndicatorApps" class="loading-indicator" style="display: none;">Loading applications...</div>
+            <div id="statusMessageApps" class="status-message" style="display: none;"></div>
+
+            <table id="pending-applications-table">
+                <thead>
+                    <tr>
+                        <th>Applicant</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Pass Type</th>
+                        <th>Duration</th>
+                        <th>Applied On</th>
+                        <th>Aadhaar Card</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="applications-table-body">
+                    <!-- Rows will be populated by JavaScript -->
+                </tbody>
+            </table>
+            <p id="no-pending-apps" style="display: none;">No pending applications found.</p>
+        </main>
+    </div>
+
+    <!-- Aadhaar View Modal -->
+    <div id="aadhaar-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" id="close-aadhaar-modal">&times;</span>
+            <h2>View Aadhaar Card</h2>
+            <div id="aadhaar-modal-content">
+                <!-- Content (image or link) will be set by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Rejection Reason Modal -->
+    <div id="rejection-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" id="close-rejection-modal">&times;</span>
+            <h2>Reject Application</h2>
+            <p>Application ID: <span id="rejection-app-id"></span></p>
+            <div class="form-group">
+                <label for="rejection-reason-text">Reason for Rejection:</label>
+                <textarea id="rejection-reason-text" placeholder="Enter reason here..." required></textarea>
+            </div>
+            <div id="rejection-modal-error" class="status-message error" style="display:none;"></div>
+            <button id="submit-rejection-button" class="btn btn-danger">Submit Rejection</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear">2024</span> Ichalkaranji Bus Booking and Pass System. Admin Panel.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../assets/js/auth.js"></script> <!-- For token, user role -->
+    <script src="assets/js/admin-common.js"></script> <!-- Common admin utilities -->
+    <script src="assets/js/admin-pass-applications.js"></script>
+    <script>
+        // Basic auth check for admin pages
+        document.addEventListener('DOMContentLoaded', () => {
+            const loggedInUser = JSON.parse(localStorage.getItem('userData'));
+            const token = localStorage.getItem('authToken');
+
+            if (!token || !loggedInUser || loggedInUser.role !== 'admin') {
+                alert('Access Denied. You must be an admin to view this page.');
+                window.location.href = '../login.html?redirect=' + encodeURIComponent(window.location.pathname);
+            }
+
+            const logoutLinkAdmin = document.getElementById('logoutLinkAdmin');
+            if (logoutLinkAdmin) {
+                logoutLinkAdmin.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('userData');
+                    window.location.href = '../login.html';
+                });
+            }
+            const yearSpan = document.getElementById('currentYear');
+            if(yearSpan) yearSpan.textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>
