@@ -574,14 +574,38 @@ header {
   transition: all var(--transition-fast);
 }
 
+.team-grid {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: nowrap; /* Ensures it stays in one line */
+}
+
+.team-member {
+  text-align: center;
+  width: 220px; /* Enough to fit the image + text */
+  margin: 10px;
+}
+
+.member-photo img {
+  width: 200px;
+  height: auto;
+  border-radius: 10px;
+}
+
+
 /* Hero Section */
 .hero {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/hero-bg.jpg');
+  background-color: rgb(0, 174, 255);
+ /*background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../images/hero-bg.jpg'); */
   background-size: cover;
   background-position: center;
   color: var(--white);
   padding: var(--spacing-xxl) 0;
   text-align: center;
+}
+
+.hero {
+  background-color: rgb(255, 0, 170);
 }
 
 .hero-content {

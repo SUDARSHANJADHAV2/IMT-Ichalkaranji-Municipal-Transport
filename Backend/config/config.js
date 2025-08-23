@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
+
 module.exports = {
   // Server configuration
   PORT: process.env.PORT || 5000,

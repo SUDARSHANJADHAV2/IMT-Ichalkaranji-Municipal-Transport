@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bus Details - IBBPS</title>
+    <title>Bus Details - IMT</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,8 +13,8 @@
         <div class="container">
             <nav class="navbar">
                 <div class="navbar-brand">
-                    <img src="assets/images/logo.png" alt="IBBPS Logo" class="logo">
-                    <h1>IBBPS</h1>
+                   <!-- <img src="assets/images/logo.png" alt="IBBPS Logo" class="logo">--> 
+                    <h1>IMT</h1>
                 </div>
                 <ul class="nav-menu">
                     <li><a href="index.html">Home</a></li>
@@ -62,7 +62,7 @@
                             <div class="departure-info">
                                 <div class="time-label">Departure</div>
                                 <div class="time-value">07:30 AM</div>
-                                <div class="location">Siddheshwar Temple</div>
+                                <div class="location">Ganpati Temple</div>
                                 <div class="date">16 Apr, 2025</div>
                             </div>
                             
@@ -73,7 +73,7 @@
                                             <div class="stop-dot"></div>
                                             <div class="stop-info">
                                                 <div class="stop-time">07:30 AM</div>
-                                                <div class="stop-name">Siddheshwar Temple</div>
+                                                <div class="stop-name">Ganpati Temple</div>
                                             </div>
                                         </div>
                                         <div class="journey-stop" style="left: 40%">
@@ -239,8 +239,97 @@
                                                     <div class="seat available" data-seat="E4">E4</div>
                                                 </div>
                                             </div>
+                                        
+                                            <!-- Selected seats display -->
+                                            <div class="selected-seats">
+                                                <h4>Selected Seats:</h4>
+                                                <p id="selected-seats-list">None</p>
+                                            </div>
+                                        
+                                            <!-- Hidden input for form submission -->
+                                            <input type="hidden" id="selected-seats-input" name="selectedSeats">
                                         </div>
-                                    </div>
+                                        
+                                        <style>
+                                        .bus-layout {
+                                            max-width: 400px;
+                                            margin: 0 auto;
+                                        }
+                                        .driver-seat {
+                                            text-align: center;
+                                            margin-bottom: 10px;
+                                        }
+                                        .seats-container {
+                                            display: flex;
+                                            flex-direction: column;
+                                            gap: 10px;
+                                        }
+                                        .seat-row {
+                                            display: flex;
+                                            justify-content: space-between;
+                                        }
+                                        .seat {
+                                            width: 50px;
+                                            height: 50px;
+                                            background-color: #e0e0e0;
+                                            border-radius: 8px;
+                                            text-align: center;
+                                            line-height: 50px;
+                                            cursor: pointer;
+                                            font-weight: bold;
+                                        }
+                                        .seat.available:hover {
+                                            background-color: #d1ffd1;
+                                        }
+                                        .seat.booked {
+                                            background-color: #ff6b6b;
+                                            cursor: not-allowed;
+                                        }
+                                        .seat.selected {
+                                            background-color: #4caf50;
+                                            color: #fff;
+                                        }
+                                        .seat-spacer {
+                                            width: 40px;
+                                        }
+                                        .selected-seats {
+                                            margin-top: 20px;
+                                            text-align: center;
+                                        }
+                                        </style>
+                                        
+                                        <script>
+                                        // Select seats
+                                        const seats = document.querySelectorAll('.seat.available');
+                                        const selectedSeatsList = document.getElementById('selected-seats-list');
+                                        const selectedSeatsInput = document.getElementById('selected-seats-input');
+                                        
+                                        let selectedSeats = [];
+                                        
+                                        seats.forEach(seat => {
+                                            seat.addEventListener('click', () => {
+                                                const seatNumber = seat.getAttribute('data-seat');
+                                                if (seat.classList.contains('selected')) {
+                                                    seat.classList.remove('selected');
+                                                    selectedSeats = selectedSeats.filter(s => s !== seatNumber);
+                                                } else {
+                                                    seat.classList.add('selected');
+                                                    selectedSeats.push(seatNumber);
+                                                }
+                                                updateSelectedSeats();
+                                            });
+                                        });
+                                        
+                                        function updateSelectedSeats() {
+                                            if (selectedSeats.length > 0) {
+                                                selectedSeatsList.textContent = selectedSeats.join(', ');
+                                            } else {
+                                                selectedSeatsList.textContent = 'None';
+                                            }
+                                            selectedSeatsInput.value = selectedSeats.join(', ');
+                                        }
+                                        </script>
+                                        
                                     
                                     <div class="booking-summary">
                                         <h3>Booking Summary</h3>
@@ -288,7 +377,7 @@
                                             </div>
                                             <div class="total-reviews">Based on 120 reviews</div>
                                         </div>
-                                        <div class="rating-breakdown">
+                                     <!--   <div class="rating-breakdown">
                                             <div class="rating-bar">
                                                 <span class="rating-level">5 stars</span>
                                                 <div class="progress-bar">
@@ -324,20 +413,22 @@
                                                 </div>
                                                 <span class="rating-count">2</span>
                                             </div>
+                                            
                                         </div>
                                     </div>
-                                    
+                                     -->
                                     <div class="reviews-list">
                                         <div class="review-item">
                                             <div class="reviewer-info">
                                                 <div class="reviewer-image">
-                                                    <img src="assets/images/user-avatar.png" alt="User">
+                                                    <img src="assets/images/person2.jpeg" alt="User"  width ='100'>
                                                 </div>
                                                 <div class="reviewer-details">
-                                                    <div class="reviewer-name">Rahul Patil</div>
+                                                    <div class="reviewer-name">Sandesh Patil</div>
                                                     <div class="review-date">10 Mar, 2025</div>
                                                 </div>
                                             </div>
+                                            
                                             <div class="review-rating">
                                                 <i class="fas fa-star"></i>
                                                 <i class="fas fa-star"></i>
@@ -345,6 +436,7 @@
                                                 <i class="fas fa-star"></i>
                                                 <i class="fas fa-star"></i>
                                             </div>
+                        
                                             <div class="review-content">
                                                 <p>Great service! The bus was clean and comfortable. The driver was professional and reached on time. Will definitely recommend to others.</p>
                                             </div>
@@ -353,7 +445,7 @@
                                         <div class="review-item">
                                             <div class="reviewer-info">
                                                 <div class="reviewer-image">
-                                                    <img src="assets/images/user-avatar.png" alt="User">
+                                                    <img src="assets/images/person1.jpeg" alt="User" width ='100'>
                                                 </div>
                                                 <div class="reviewer-details">
                                                     <div class="reviewer-name">Anita Sharma</div>
@@ -375,7 +467,7 @@
                                         <div class="review-item">
                                             <div class="reviewer-info">
                                                 <div class="reviewer-image">
-                                                    <img src="assets/images/user-avatar.png" alt="User">
+                                                    <img src="assets/images/person2.jpeg" alt="User"  width ='100'>
                                                 </div>
                                                 <div class="reviewer-details">
                                                     <div class="reviewer-name">Suresh Kulkarni</div>
@@ -398,10 +490,9 @@
                                             <button class="btn btn-outline">View More Reviews</button>
                                         </div>
                                     </div>
-                                    
                                     <div class="write-review">
                                         <h3>Write a Review</h3>
-                                        <form class="review-form">
+                                        <form class="review-form" action="https://formspree.io/f/mnndnore" method="POST">
                                             <div class="form-group">
                                                 <label>Your Rating</label>
                                                 <div class="rating-input">
@@ -411,14 +502,42 @@
                                                     <i class="far fa-star" data-rating="4"></i>
                                                     <i class="far fa-star" data-rating="5"></i>
                                                 </div>
+                                                <!-- Hidden input to store the selected rating -->
+                                                <input type="hidden" name="rating" id="rating-value" required>
                                             </div>
+                                    
                                             <div class="form-group">
                                                 <label for="review-text">Your Review</label>
-                                                <textarea id="review-text" placeholder="Share your experience..."></textarea>
+                                                <textarea id="review-text" name="review" placeholder="Share your experience..." required></textarea>
                                             </div>
+                                    
                                             <button type="submit" class="btn btn-primary">Submit Review</button>
                                         </form>
                                     </div>
+                                    
+                                    <script>
+                                    // Star rating selection
+                                    const stars = document.querySelectorAll('.rating-input i');
+                                    const ratingValue = document.getElementById('rating-value');
+                                    
+                                    stars.forEach((star, idx) => {
+                                        star.addEventListener('click', () => {
+                                            // Remove active class from all stars
+                                            stars.forEach(s => s.classList.remove('fas'));
+                                            stars.forEach(s => s.classList.add('far'));
+                                            
+                                            // Add active class to selected stars
+                                            for (let i = 0; i <= idx; i++) {
+                                                stars[i].classList.remove('far');
+                                                stars[i].classList.add('fas');
+                                            }
+                                    
+                                            // Set rating value to hidden input
+                                            ratingValue.value = idx + 1;
+                                        });
+                                    });
+                                    </script>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -432,9 +551,9 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
-                    <img src="assets/images/logo.png" alt="IBBPS Logo">
-                    <h2>IBBPS</h2>
-                    <p>Ichalkaranji Bus Booking and Pass System</p>
+                  <!--  <img src="assets/images/logo.png" alt="IBBPS Logo">--> 
+                    <h2>IMT</h2>
+                    <p>IMT - Ichalkaranji Municipal Transport</p>
                 </div>
                 <div class="footer-links">
                     <div class="footer-column">
@@ -458,15 +577,15 @@
                     <div class="footer-column">
                         <h3>Contact Info</h3>
                         <ul class="contact-info">
-                            <li><i class="fas fa-map-marker-alt"></i> Bus Depot, Main Road, Ichalkaranji</li>
+                            <li><i class="fas fa-map-marker-alt"></i> Bus Stand, Main Road, Ichalkaranji</li>
                             <li><i class="fas fa-phone"></i> +91 9876543210</li>
-                            <li><i class="fas fa-envelope"></i> info@ibbps.com</li>
+                            <li><i class="fas fa-envelope"></i> info@imt.com</li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Ichalkaranji Bus Booking and Pass System. All rights reserved.</p>
+                <p>&copy; 2025 IMT - Ichalkaranji Municipal Transport. All rights reserved.</p>
                 <div class="social-links">
                     <a href="#"><i class="fab fa-facebook-f"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>

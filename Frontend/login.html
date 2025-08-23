@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - IBBPS</title>
+    <title>Login - IMT</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,9 +12,9 @@
     <header>
         <div class="container">
             <nav class="navbar">
-                <div class="navbar-brand">
-                    <img src="assets/images/logo.png" alt="IBBPS Logo" class="logo">
-                    <h1>IBBPS</h1>
+                <div class="navbar-brand"> 
+                    <img src="assets/images/logo.png" alt="IMT Logo" class="logo">                
+                    <h1>IMT</h1>
                 </div>
                 <ul class="nav-menu">
                     <li><a href="index.html">Home</a></li>
@@ -37,7 +37,7 @@
             <div class="container">
                 <div class="auth-container">
                     <div class="auth-form-container">
-                        <h2>Login to Your Account</h2>
+                        <h2>Login to Your Account</h2>                      
                         <form id="login-form" class="auth-form">
                             <div class="form-group">
                                 <label for="email">Email</label>
@@ -83,8 +83,8 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
-                    <img src="assets/images/logo.png" alt="IBBPS Logo">
-                    <h2>IBBPS</h2>
+                    <!-- <img src="assets/images/logo.png" alt="IBBPS Logo">-->
+                    <h2>IMT</h2>
                 </div>
                 <div class="footer-links">
                     <h3>Quick Links</h3>
@@ -99,9 +99,9 @@
                 </div>
                 <div class="footer-contact">
                     <h3>Contact Us</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> IBBPS Office, Main Road, Ichalkaranji, Maharashtra</p>
+                    <p><i class="fas fa-map-marker-alt"></i> IMT Office, Main Road, Ichalkaranji, Maharashtra</p>
                     <p><i class="fas fa-phone"></i> +91 123-456-7890</p>
-                    <p><i class="fas fa-envelope"></i> info@ibbps.com</p>
+                    <p><i class="fas fa-envelope"></i> info@imt.com</p>
                 </div>
                 <div class="footer-social">
                     <h3>Follow Us</h3>
@@ -114,12 +114,71 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Ichalkaranji Bus Booking and Pass System. All rights reserved.</p>
+                <p>&copy; 2025 IMT - Ichalkaranji Municipal Transport. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script src="assets/js/main.js"></script>
     <script src="assets/js/auth.js"></script>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+        
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+        
+            fetch('login.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(data.message);
+                    updateUIToLoggedIn();
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(err => {
+                console.error("Fetch error:", err);
+                alert("An error occurred. Try again.");
+            });
+        });
+        
+        function updateUIToLoggedIn() {
+            const loginBtn = document.querySelector('.nav-menu li a.active');
+            if (loginBtn) {
+                loginBtn.textContent = 'Logout';
+                loginBtn.classList.remove('active');
+                loginBtn.classList.add('btn-secondary');
+                loginBtn.href = '#';
+                loginBtn.onclick = logout;
+            }
+        
+            const formContainer = document.querySelector('.auth-form-container');
+            if (formContainer) {
+                formContainer.innerHTML = `
+                    <h2>Welcome!</h2>
+                    <p>You are now logged in.</p>
+                `;
+            }
+        }
+        
+        function logout() {
+            fetch('logout.php')
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                location.reload(); // refresh page
+            })
+            .catch(err => {
+                console.error("Logout error:", err);
+                alert("Logout failed.");
+            });
+        }
+        </script>
 </body>
 </html>

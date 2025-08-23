@@ -28,6 +28,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../frontend')));
 }
 
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/buses', busRoutes);
@@ -36,6 +37,7 @@ app.use('/api/passes', passRoutes);
 app.use('/api/admin', adminRoutes);
 
 // Catch-all route to serve frontend in production
+
 if (process.env.NODE_ENV === 'production') {
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/index.html'));

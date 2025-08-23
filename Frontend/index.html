@@ -3,26 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IBBPS - Ichalkaranji Bus Booking and Pass System</title>
+    <title>IMT - Ichalkaranji Municipal Transport</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <header>
         <div class="container">
             <nav class="navbar">
                 <div class="navbar-brand">
-                    <img src="assets/images/logo.png" alt="IBBPS Logo" class="logo">
-                    <h1>IBBPS</h1>
+                    <img src="assets/images/logo.png" alt="IMT Logo" class="logo">
+                    <h1>IMT</h1>
                 </div>
+                
                 <ul class="nav-menu">
                     <li><a href="index.html" class="active">Home</a></li>
                     <li><a href="search.html">Search Buses</a></li>
                     <li><a href="pass-application.html">Monthly Pass</a></li>
                     <li><a href="about.html">About</a></li>
-                    <li><a href="login.html" class="btn btn-primary">Login</a></li>
+                    <!-- Login button (Initially visible if not logged in) -->
+                    <li><a href="login.html" id="login-button" class="btn btn-primary" style="display:none;">Login</a></li>
+                    <!-- Logout button (Initially visible if logged in) -->
+                    <li><a href="#" id="logout-button" class="btn btn-primary" style="display:none;">Logout</a></li>
                 </ul>
+
                 <div class="hamburger">
                     <span class="bar"></span>
                     <span class="bar"></span>
@@ -31,12 +37,104 @@
             </nav>
         </div>
     </header>
+    
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                document.getElementById('login-button').style.display = 'none';
+                document.getElementById('logout-button').style.display = 'block';
+            } else {
+                document.getElementById('login-button').style.display = 'block';
+                document.getElementById('logout-button').style.display = 'none';
+            }
+            
+            document.getElementById('logout-button').addEventListener('click', function() {
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = "index.html"; // Refresh to update buttons
+            });
+        });
+        </script>
+        
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+        });
+    
+        // Function to check if user is logged in
+        function checkLoginStatus() {
+            const currentUser = localStorage.getItem('currentUser');
+            const logoutButton = document.getElementById('logout-button');
+            const loginButton = document.getElementById('login-button');
+    
+            if (currentUser) {
+                // Show logout button, hide login button
+                logoutButton.style.display = 'block';
+                loginButton.style.display = 'none';
+            } else {
+                // Show login button, hide logout button
+                loginButton.style.display = 'block';
+                logoutButton.style.display = 'none';
+            }
+        }
+    
+        // Logout user and clear session
+        const logoutButton = document.getElementById('logout-button');
+        if (logoutButton) {
+            logoutButton.addEventListener('click', function() {
+                // Clear user data from localStorage
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('authToken');
+    
+                // Redirect to login page after logout
+                window.location.href = 'login.html'; // Redirect to login page
+            });
+        }
+    </script>
+    
+
+   <!-- Bootstrap Carousel -->
+<div id="busCarousel" class="carousel slide" data-bs-ride="carousel">
+    <!-- Indicators (Dots) -->
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#busCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#busCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#busCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      
+    </div>
+  
+    <!-- Carousel Items -->
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="assets/images/bus4.jpg" class="d-block w-100" alt="Bus 1">
+      </div>
+      <div class="carousel-item">
+        <img src="assets/images/bus2.jpg" class="d-block w-100" alt="Bus 2">
+      </div>
+      <div class="carousel-item">
+        <img src="assets/images/bus3.jpg" class="d-block w-100" alt="Bus 3">
+      </div>
+      
+    </div>
+  
+    <!-- Controls (Prev/Next Arrows) -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#busCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#busCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  
+  
     <main>
-        <section class="hero">
-            <div class="container">
-                <div class="hero-content">
-                    <h1>Ichalkaranji Bus Booking and Pass System</h1>
+        <section class="hero" style="background-color: rgb(0, 89, 255);">
+            <div class="container" >
+                <div class="hero-content" >
+                    <h1>IMT - Ichalkaranji Municipal Transport</h1>
                     <p>Streamlining public transport access in Ichalkaranji through a modern online platform.</p>
                     <div class="search-box">
                         <form action="search.html" method="get" class="search-form">
@@ -55,6 +153,8 @@
                             <button type="submit" class="btn btn-primary">Search Buses</button>
                         </form>
                     </div>
+                </div>
+                
                 </div>
             </div>
         </section>
@@ -100,15 +200,15 @@
                 <h2 class="section-title">Popular Routes</h2>
                 <div class="routes-grid">
                     <div class="route-card">
-                        <h3>Siddheshwar Temple to Bus Stand</h3>
+                        <h3>Ganpati Temple to Bus Stand</h3>
                         <p><i class="fas fa-bus"></i> 5 buses</p>
-                        <p><i class="fas fa-rupee-sign"></i> Starting from ₹10</p>
+                        <p><i class="fas fa-rupee-sign"></i> Starting from ₹15</p>
                         <a href="search.html?source=Siddheshwar%20Temple&destination=Bus%20Stand" class="btn btn-secondary">View Buses</a>
                     </div>
                     <div class="route-card">
-                        <h3>Railway Station to College Road</h3>
+                        <h3>Bus Station to Rajwada Chowk</h3>
                         <p><i class="fas fa-bus"></i> 3 buses</p>
-                        <p><i class="fas fa-rupee-sign"></i> Starting from ₹15</p>
+                        <p><i class="fas fa-rupee-sign"></i> Starting from ₹10</p>
                         <a href="search.html?source=Railway%20Station&destination=College%20Road" class="btn btn-secondary">View Buses</a>
                     </div>
                     <div class="route-card">
@@ -132,15 +232,16 @@
                 <div class="app-content">
                     <div class="app-text">
                         <h2>Download Our Mobile App</h2>
-                        <p>Get the IBBPS mobile app for easy bus booking and pass management on the go.</p>
+                        <p>Get the IMT mobile app for easy bus booking and pass management on the go.</p>
                         <div class="app-buttons">
                             <a href="#" class="btn btn-app"><i class="fab fa-google-play"></i> Google Play</a>
                             <a href="#" class="btn btn-app"><i class="fab fa-apple"></i> App Store</a>
                         </div>
                     </div>
-                    <div class="app-image">
+                   <!-- <div class="app-image">
                         <img src="assets/images/mobile-app.png" alt="IBBPS Mobile App">
                     </div>
+                    --> 
                 </div>
             </div>
         </section>
@@ -150,8 +251,8 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
-                    <img src="assets/images/logo.png" alt="IBBPS Logo">
-                    <h2>IBBPS</h2>
+                   <!-- <img src="assets/images/logo.png" alt="IBBPS Logo">--> 
+                    <h2>IMT</h2>
                 </div>
                 <div class="footer-links">
                     <h3>Quick Links</h3>
@@ -166,9 +267,9 @@
                 </div>
                 <div class="footer-contact">
                     <h3>Contact Us</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> IBBPS Office, Main Road, Ichalkaranji, Maharashtra</p>
+                    <p><i class="fas fa-map-marker-alt"></i> IMT Office, Main Road, Ichalkaranji, Maharashtra</p>
                     <p><i class="fas fa-phone"></i> +91 123-456-7890</p>
-                    <p><i class="fas fa-envelope"></i> info@ibbps.com</p>
+                    <p><i class="fas fa-envelope"></i> info@imt.com</p>
                 </div>
                 <div class="footer-social">
                     <h3>Follow Us</h3>
@@ -181,11 +282,19 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Ichalkaranji Bus Booking and Pass System. All rights reserved.</p>
+                <p>&copy; 2025 IMT - Ichalkaranji Municipal Transport. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
+    <script src="static/js/auth.js"></script>
+
     <script src="assets/js/main.js"></script>
+    <!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

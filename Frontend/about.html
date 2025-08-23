@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About IBBPS - Ichalkaranji Bus Booking and Pass System</title>
+    <title>About IMT - Ichalkaranji Muncipal Transport</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -13,24 +13,21 @@
     <header>
         <div class="container">
             <nav class="navbar">
-                <div class="logo">
-                    <a href="index.html">
-                        <img src="assets/images/logo.png" alt="IBBPS Logo">
-                        <span>IBBPS</span>
-                    </a>
+                <div class="navbar-brand">
+                    <img src="assets/images/logo.png" alt="IMT Logo" class="logo">
+                    <h1>IMT</h1>
                 </div>
-                <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li>
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="active">Home</a></li>
                     <li><a href="search.html">Search Buses</a></li>
-                    <li><a href="pass-application.html">Bus Pass</a></li>
-                    <li><a href="about.html" class="active">About</a></li>
+                    <li><a href="pass-application.html">Monthly Pass</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="login.html" class="btn btn-primary">Login</a></li>
                 </ul>
-                <div class="auth-buttons">
-                    <a href="login.html" class="btn btn-outline">Login</a>
-                    <a href="register.html" class="btn btn-primary">Sign Up</a>
-                </div>
-                <div class="mobile-menu-btn">
-                    <i class="fas fa-bars"></i>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
                 </div>
             </nav>
         </div>
@@ -41,7 +38,7 @@
         <section class="about-hero">
             <div class="container">
                 <div class="about-hero-content">
-                    <h1>About Ichalkaranji Bus Booking and Pass System</h1>
+                    <h1>About IMT - Ichalkaranji Municipal Transport</h1>
                     <p>Revolutionizing urban mobility for the citizens of Ichalkaranji</p>
                 </div>
             </div>
@@ -52,23 +49,23 @@
                 <div class="mission-content">
                     <div class="mission-text">
                         <h2>Our Mission</h2>
-                        <p>The Ichalkaranji Bus Booking and Pass System (IBBPS) is dedicated to transforming public transportation in Ichalkaranji by providing a modern, efficient, and user-friendly platform that connects citizens to the city's bus network.</p>
+                        <p>The Ichalkaranji Municipal Transport (IMT) is dedicated to transforming public transportation in Ichalkaranji by providing a modern, efficient, and user-friendly platform that connects citizens to the city's bus network.</p>
                         <p>We aim to reduce waiting times, simplify the booking process, and make public transportation accessible to all citizens through digital innovation.</p>
                     </div>
                     <div class="mission-image">
-                        <img src="assets/images/mission-image.jpg" alt="Ichalkaranji City Bus">
+                        <img src="assets/images/logo.png" alt="Ichalkaranji City Bus" width = '20'>
                     </div>
                 </div>
             </div>
+            
         </section>
-
         <section class="about-features">
             <div class="container">
                 <h2 class="section-title">What We Offer</h2>
                 <div class="features-grid">
                     <div class="feature-card">
                         <div class="feature-icon">
-                            <i class="fas fa-search"></i>
+                            <i class="fas fa-search" ></i>
                         </div>
                         <h3>Easy Route Search</h3>
                         <p>Quickly find buses by simply entering your source and destination points. Get instant information on available routes, timings, and fares.</p>
@@ -141,35 +138,37 @@
                 <div class="team-grid">
                     <div class="team-member">
                         <div class="member-photo">
-                            <img src="assets/images/team-member-1.jpg" alt="Team Member">
+                            <img src="assets/images/pic2.jpg" alt="Team Member" width="200">
                         </div>
-                        <h3>Rajesh Sharma</h3>
+                        <h3>Sakshi Biranje</h3>
                         <p>Transport Director</p>
                     </div>
-                    <div class="team-member">
+                   <!--  <div class="team-member">
                         <div class="member-photo">
-                            <img src="assets/images/team-member-2.jpg" alt="Team Member">
+                            <img src="assets/images/pic2.jpg" alt="Team Member" width="200">
                         </div>
-                        <h3>Priya Desai</h3>
+                        <h3>X Y Z</h3>
                         <p>Operations Manager</p>
                     </div>
                     <div class="team-member">
                         <div class="member-photo">
-                            <img src="assets/images/team-member-3.jpg" alt="Team Member">
+                            <img src="assets/images/pic2.jpg" alt="Team Member" width="200">
                         </div>
-                        <h3>Vijay Patil</h3>
+                        <h3>A B C </h3>
                         <p>Technical Lead</p>
                     </div>
                     <div class="team-member">
                         <div class="member-photo">
-                            <img src="assets/images/team-member-4.jpg" alt="Team Member">
+                            <img src="assets/images/pic2.jpg" alt="Team Member" width="200">
                         </div>
-                        <h3>Neha Kulkarni</h3>
+                        <h3>D E F</h3>
                         <p>Customer Support Head</p>
                     </div>
+                    -->
                 </div>
             </div>
         </section>
+        
 
         <section class="about-faq">
             <div class="container">
@@ -233,7 +232,7 @@
                             <i class="fas fa-map-marker-alt"></i>
                             <div>
                                 <h3>Office Address</h3>
-                                <p>Transport Bhavan, Main Road, Ichalkaranji - 416115, Maharashtra</p>
+                                <p>Bus Stand, Main Road, Ichalkaranji - 416115, Maharashtra</p>
                             </div>
                         </div>
                         <div class="contact-item">
@@ -248,8 +247,8 @@
                             <i class="fas fa-envelope"></i>
                             <div>
                                 <h3>Email Address</h3>
-                                <p>info@ibbps.org</p>
-                                <p>support@ibbps.org</p>
+                                <p>info@imt.org</p>
+                                <p>support@imt.org</p>
                             </div>
                         </div>
                         <div class="contact-item">
@@ -263,7 +262,13 @@
                     </div>
                     <div class="contact-form">
                         <h3>Send Us a Message</h3>
-                        <form id="contactForm">
+                        <p>
+                            We Value Your Feedback!
+                            Help us improve and serve you better. Please take a moment to share your thoughts about your experience. Your suggestions and opinions are important to us and will help shape a better service for everyone.
+
+                            Thank you for being a part of our journey! 🌟
+                        </p>
+                        <form id="contactForm" action="https://formspree.io/f/xgvkvpdn" method="POST">
                             <div class="form-group">
                                 <label for="name">Name</label>
                                 <input type="text" id="name" name="name" required>
@@ -287,6 +292,7 @@
                             <button type="submit" class="btn btn-primary">Send Message</button>
                         </form>
                     </div>
+                    
                 </div>
             </div>
         </section>
@@ -296,8 +302,8 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
-                    <img src="assets/images/logo.png" alt="IBBPS Logo">
-                    <span>IBBPS</span>
+                    <!-- <img src="assets/images/logo.png" alt="IBBPS Logo"> -->
+                    <span>IMT</span>
                 </div>
                 <div class="footer-links">
                     <h3>Quick Links</h3>
@@ -322,7 +328,8 @@
                 <div class="footer-newsletter">
                     <h3>Subscribe to Our Newsletter</h3>
                     <p>Stay updated with the latest news and updates</p>
-                    <form class="newsletter-form">
+                    <form class="newsletter-form" action="https://formspree.io/f/xkgrgpyk"
+                    method="POST">
                         <input type="email" placeholder="Enter your email">
                         <button type="submit" class="btn btn-primary">Subscribe</button>
                     </form>
@@ -333,9 +340,10 @@
                         <a href="#"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
+                
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Ichalkaranji Bus Booking and Pass System. All rights reserved.</p>
+                <p>&copy; 2025 IMT - Ichalkaranji Municipal Transport. All rights reserved.</p>
             </div>
         </div>
     </footer>

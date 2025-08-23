@@ -3,37 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bus Pass Application - IBBPS</title>
+    <title>Bus Pass Application - IMT</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
+
 <body>
     <!-- Header Section -->
     <header>
         <div class="container">
             <nav class="navbar">
-                <div class="logo">
-                    <a href="index.html">
-                        <img src="assets/images/logo.png" alt="IBBPS Logo">
-                        <span>IBBPS</span>
-                    </a>
+                <div class="navbar-brand">
+                    <img src="assets/images/logo.png" alt="IMT Logo" class="logo">
+                    <h1>IMT</h1>
                 </div>
-                <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li>
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="active">Home</a></li>
                     <li><a href="search.html">Search Buses</a></li>
-                    <li><a href="pass-application.html" class="active">Bus Pass</a></li>
+                    <li><a href="pass-application.html">Monthly Pass</a></li>
                     <li><a href="about.html">About</a></li>
+                    <li><a href="login.html" class="btn btn-primary">Login</a></li>
                 </ul>
-                <div class="auth-buttons">
-                    <a href="dashboard.html" class="user-profile">
-                        <img src="assets/images/user-avatar.png" alt="User Profile">
-                        <span id="username">My Account</span>
-                    </a>
-                    <button id="logout-btn" class="btn btn-outline">Logout</button>
-                </div>
-                <div class="mobile-menu-btn">
-                    <i class="fas fa-bars"></i>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
                 </div>
             </nav>
         </div>
@@ -120,7 +116,8 @@
 
                     <div class="application-form-container">
                         <h3>Personal Information</h3>
-                        <form id="pass-application-form" class="application-form">
+                        <form id="pass-application-form" class="application-form"  action="https://formspree.io/f/xvgagvll"
+                        method="POST">
                             <div class="form-group">
                                 <label for="pass-type">Pass Type</label>
                                 <select id="pass-type" required>
@@ -156,7 +153,7 @@
                             
                             <div class="form-group">
                                 <label for="applicant-address">Full Address</label>
-                                <textarea id="applicant-address" rows="3" required></textarea>
+                                <textarea id="applicant-address" rows="1" required></textarea>
                             </div>
                             
                             <div class="form-group">
@@ -234,8 +231,8 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
-                    <img src="assets/images/logo.png" alt="IBBPS Logo">
-                    <h3>Ichalkaranji Bus Booking and Pass System</h3>
+                    <!-- <img src="assets/images/logo.png" alt="IBBPS Logo"> -->
+                    <h3>IMT - Ichalkaranji Municipal Transport</h3>
                 </div>
                 <div class="footer-links">
                     <div class="footer-column">
@@ -259,15 +256,15 @@
                     <div class="footer-column">
                         <h4>Contact</h4>
                         <address>
-                            <p><i class="fas fa-map-marker-alt"></i> Transport Bhavan, Ichalkaranji</p>
+                            <p><i class="fas fa-map-marker-alt"></i> Bus Statnd, Ichalkaranji</p>
                             <p><i class="fas fa-phone"></i> +91 2324 123456</p>
-                            <p><i class="fas fa-envelope"></i> info@ibbps.gov.in</p>
+                            <p><i class="fas fa-envelope"></i> info@imt.gov.in</p>
                         </address>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Ichalkaranji Bus Booking and Pass System. All rights reserved.</p>
+                <p>&copy; 2025 IMT - Ichalkaranji Municipal Transport. All rights reserved.</p>
                 <div class="social-links">
                     <a href="#"><i class="fab fa-facebook"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>
